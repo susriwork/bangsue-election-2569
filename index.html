@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>ผลเลือกตั้ง สก. บางซื่อ 2569</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<style>
+/* Layout: desktop = summary strip, map (left) + detail panel (right).
+   Phone/tablet (<=900px) = full-height map app: compact header, swipeable summary strip, map fills the screen, details slide up in a bottom sheet. */
+:root{
+  --bg:#f4f5f2; --surface:#ffffff; --fg:#1d2420; --muted:#5d6862; --line:#d9ddd8;
+  --win:#2e7d3a; --win-soft:#cfe7d1; --lose:#c62f2f; --lose-soft:#f3cfcc; --on-accent:#ffffff;
+  --seq-lo:#eef1ec; --seq-hi:#1f5f8a; --org-lo:#fbeee0; --org-hi:#d9620b; --hover:#111611;
+  --display:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai","Anuphan",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141917; --surface:#1c2320; --fg:#e7ece8; --muted:#9aa7a0; --line:#323b37;
+  --win:#5fbf6c; --win-soft:#24402a; --lose:#ec6a62; --lose-soft:#4a2624; --on-accent:#0f1a12;
+  --seq-lo:#222a27; --seq-hi:#5aaee3; --org-lo:#2a2420; --org-hi:#f2913f; --hover:#ffffff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141917; --surface:#1c2320; --fg:#e7ece8; --muted:#9aa7a0; --line:#323b37;
+  --win:#5fbf6c; --win-soft:#24402a; --lose:#ec6a62; --lose-soft:#4a2624; --on-accent:#0f1a12;
+  --seq-lo:#222a27; --seq-hi:#5aaee3; --org-lo:#2a2420; --org-hi:#f2913f; --hover:#ffffff; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+[hidden]{display:none!important}
+
+/* required styles */
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+	background: transparent;
+}
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	/* Fallback for FF which doesn't support pinch-zoom */
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	behavior: url(#default#VML);
+	display: inline-block;
+	position: absolute;
+	}
+
+
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAQAAAADQ4RFAAACf0lEQVR4AY1UM3gkARTePdvdoTxXKc+qTl3aU5U6b2Kbkz3Gtq3Zw6ziLGNPzrYx7946Tr6/ee/XeCQ4D3ykPtL5tHno4n0d/h3+xfuWHGLX81cn7r0iTNzjr7LrlxCqPtkbTQEHeqOrTy4Yyt3VCi/IOB0v7rVC7q45Q3Gr5K6jt+3Gl5nCoDD4MtO+j96Wu8atmhGqcNGHObuf8OM/x3AMx38+4Z2sPqzCxRFK2aF2e5Jol56XTLyggAMTL56XOMoS1W4pOyjUcGGQdZxU6qRh7B9Zp+PfpOFlqt0zyDZckPi1ttmIp03jX8gyJ8a/PG2yutpS/Vol7peZIbZcKBAEEheEIAgFbDkz5H6Zrkm2hVWGiXKiF4Ycw0RWKdtC16Q7qe3X4iOMxruonzegJzWaXFrU9utOSsLUmrc0YjeWYjCW4PDMADElpJSSQ0vQvA1Tm6/JlKnqFs1EGyZiFCqnRZTEJJJiKRYzVYzJck2Rm6P4iH+cmSY0YzimYa8l0EtTODFWhcMIMVqdsI2uiTvKmTisIDHJ3od5GILVhBCarCfVRmo4uTjkhrhzkiBV7SsaqS+TzrzM1qpGGUFt28pIySQHR6h7F6KSwGWm97ay+Z+ZqMcEjEWebE7wxCSQwpkhJqoZA5ivCdZDjJepuJ9IQjGGUmuXJdBFUygxVqVsxFsLMbDe8ZbDYVCGKxs+W080max1hFCarCfV+C1KATwcnvE9gRRuMP2prdbWGowm1KB1y+zwMMENkM755cJ2yPDtqhTI6ED1M/82yIDtC/4j4BijjeObflpO9I9MwXTCsSX8jWAFeHr05WoLTJ5G8IQVS/7vwR6ohirYM7f6HzYpogfS3R2OAAAAAElFTkSuQmCC);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAQAAABvcdNgAAAEsklEQVR4AWL4TydIhpZK1kpWOlg0w3ZXP6D2soBtG42jeI6ZmQTHzAxiTbSJsYLjO9HhP+WOmcuhciVnmHVQcJnp7DFvScowZorad/+V/fVzMdMT2g9Cv9guXGv/7pYOrXh2U+RRR3dSd9JRx6bIFc/ekqHI29JC6pJ5ZEh1yWkhkbcFeSjxgx3L2m1cb1C7bceyxA+CNjT/Ifff+/kDk2u/w/33/IeCMOSaWZ4glosqT3DNnNZQ7Cs58/3Ce5HL78iZH/vKVIaYlqzfdLu8Vi7dnvUbEza5Idt36tquZFldl6N5Z/POLof0XLK61mZCmJSWjVF9tEjUluu74IUXvgttuVIHE7YxSkaYhJZam7yiM9Pv82JYfl9nptxZaxMJE4YSPty+vF0+Y2up9d3wwijfjZbabqm/3bZ9ecKHsiGmRflnn1MW4pjHf9oLufyn2z3y1D6n8g8TZhxyzipLNPnAUpsOiuWimg52psrTZYnOWYNDTMuWBWa0tJb4rgq1UvmutpaYEbZlwU3CLJm/ayYjHW5/h7xWLn9Hh1vepDkyf7dE7MtT5LR4e7yYpHrkhOUpEfssBLq2pPhAqoSWKUkk7EDqkmK6RrCEzqDjhNDWNE+XSMvkJRDWlZTmCW0l0PHQGRZY5t1L83kT0Y3l2SItk5JAWHl2dCOBm+fPu3fo5/3v61RMCO9Jx2EEYYhb0rmNQMX/vm7gqOEJLcXTGw3CAuRNeyaPWwjR8PRqKQ1PDA/dpv+on9Shox52WFnx0KY8onHayrJzm87i5h9xGw/tfkev0jGsQizqezUKjk12hBMKJ4kbCqGPVNXudyyrShovGw5CgxsRICxF6aRmSjlBnHRzg7Gx8fKqEubI2rahQYdR1YgDIRQO7JvQyD52hoIQx0mxa0ODtW2Iozn1le2iIRdzwWewedyZzewidueOGqlsn1MvcnQpuVwLGG3/IR1hIKxCjelIDZ8ldqWz25jWAsnldEnK0Zxro19TGVb2ffIZEsIO89EIEDvKMPrzmBOQcKQ+rroye6NgRRxqR4U8EAkz0CL6uSGOm6KQCdWjvjRiSP1BPalCRS5iQYiEIvxuBMJEWgzSoHADcVMuN7IuqqTeyUPq22qFimFtxDyBBJEwNyt6TM88blFHao/6tWWhuuOM4SAK4EI4QmFHA+SEyWlp4EQoJ13cYGzMu7yszEIBOm2rVmHUNqwAIQabISNMRstmdhNWcFLsSm+0tjJH1MdRxO5Nx0WDMhCtgD6OKgZeljJqJKc9po8juskR9XN0Y1lZ3mWjLR9JCO1jRDMd0fpYC2VnvjBSEFg7wBENc0R9HFlb0xvF1+TBEpF68d+DHR6IOWVv2BECtxo46hOFUBd/APU57WIoEwJhIi2CdpyZX0m93BZicktMj1AS9dClteUFAUNUIEygRZCtik5zSxI9MubTBH1GOiHsiLJ3OCoSZkILa9PxiN0EbvhsAo8tdAf9Seepd36lGWHmtNANTv5Jd0z4QYyeo/UEJqxKRpg5LZx6btLPsOaEmdMyxYdlc8LMaJnikDlhclqmPiQnTEpLUIZEwkRagjYkEibQErwhkTAKCLQEbUgkzJQWc/0PstHHcfEdQ+UAAAAASUVORK5CYII=);
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+/* Default icon URLs */
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII=);
+	}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+/* popup */
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+/* Printing */
+
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
+#lmap{height:min(72vh,720px);background:#2a2f2c;z-index:0}
+.leaflet-container{font-family:var(--body)}
+.mlbl{font-family:var(--body);font-weight:700;font-size:12px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;white-space:nowrap;text-align:center;pointer-events:none}
+.views{display:flex;gap:4px;padding:10px 12px 0;flex-wrap:wrap}
+.views button{font:inherit;font-size:.88rem;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer}
+.views button[aria-pressed="true"]{background:var(--win);border-color:var(--win);color:var(--on-accent)}
+.op{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted);margin-right:6px}
+.op input{width:90px}
+.tilenote{position:absolute;top:10px;left:58px;right:10px;z-index:1001;pointer-events:none;background:rgba(0,0,0,.72);color:#fff;font-size:.78rem;line-height:1.45;padding:6px 10px;border-radius:8px}
+
+body{font-family:var(--body);font-size:15px;line-height:1.55;padding:16px 16px 32px}
+.wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.top{display:flex;align-items:flex-start;gap:12px}
+.ttl{flex:1;min-width:0}
+h1{font-family:var(--display);font-size:1.6rem;font-weight:700;margin:0;line-height:1.25;text-wrap:balance}
+.sub{color:var(--muted);margin:2px 0 0;font-size:.92rem}
+.info-btn{display:none;font:inherit;font-size:.8rem;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{background:var(--surface);padding:12px 14px;min-width:0}
+.stat .k{font-size:.8rem;color:var(--muted);letter-spacing:.02em}
+.stat .v{font-family:var(--display);font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .s{font-size:.82rem;color:var(--muted)}
+.v.win{color:var(--win)} .v.lose{color:var(--lose)}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;position:relative;min-width:0}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button,.zoom button{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:5px 10px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+.zoom{display:flex;gap:4px;align-items:center}
+.chk{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted);cursor:pointer;margin-right:6px}
+.chk input{accent-color:var(--fg);margin:0}
+button:focus-visible{outline:2px solid var(--seq-hi);outline-offset:2px}
+.stage{position:relative}
+svg#map{display:block;width:100%;height:min(72vh,720px);touch-action:none;cursor:grab;background:var(--bg)}
+svg#map.drag{cursor:grabbing}
+.area{stroke:var(--surface);stroke-width:1.2;vector-effect:non-scaling-stroke;cursor:pointer;transition:opacity .15s}
+.area.hl{stroke:var(--hover);stroke-width:2.6}
+.lbl{font-family:var(--body);fill:var(--fg);paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round;pointer-events:none;text-anchor:middle;dominant-baseline:central;font-weight:600}
+.fzoom{display:none}
+.taphint{display:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:5px}
+.ramp{display:inline-block;width:140px;height:10px;border-radius:3px;vertical-align:middle;margin:0 6px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.panel h2,.sheet h2{font-family:var(--display);font-size:1.1rem;margin:0 0 2px;line-height:1.3}
+.panel .place,.sheet .place{color:var(--muted);font-size:.86rem;margin:0 0 10px}
+.verdict{display:inline-block;font-family:var(--display);font-weight:600;padding:3px 10px;border-radius:999px;font-size:.92rem}
+.verdict.win{background:var(--win-soft);color:var(--win)} .verdict.lose{background:var(--lose-soft);color:var(--lose)}
+.score{font-family:var(--display);font-size:1.25rem;font-weight:600;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+.gap{color:var(--muted);font-size:.9rem;margin:0 0 12px}
+.bars{display:flex;flex-direction:column;gap:5px;margin:0 0 14px}
+.bar{display:grid;grid-template-columns:52px 1fr 64px;gap:8px;align-items:center;font-size:.85rem}
+.bar .track{height:10px;background:var(--bg);border-radius:3px;overflow:hidden}
+.bar .fill{height:100%;background:var(--muted);border-radius:3px}
+.bar.c4 .fill{background:var(--win)} .bar.c5 .fill{background:var(--lose)}
+.bar .n{text-align:right;font-variant-numeric:tabular-nums}
+dl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:0;font-size:.9rem}
+dt{color:var(--muted)} dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+dl .sep{grid-column:1/-1;border-top:1px solid var(--line);margin:4px 0}
+.units{margin-top:14px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.8rem;font-variant-numeric:tabular-nums}
+th,td{padding:4px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:500} td:first-child,th:first-child{text-align:left}
+td.w{color:var(--win);font-weight:600} td.l{color:var(--lose);font-weight:600}
+.hint{color:var(--muted);font-size:.88rem}
+.note{color:var(--muted);font-size:.8rem;margin:0}
+.tip{position:fixed;z-index:1000;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;width:300px;max-width:calc(100vw - 32px);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.tip .bars,.tip .units{display:none}
+.sheet{display:none}
+.lg-short{display:none}
+.howto{margin:0 0 4px;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:.92rem;line-height:1.55}
+@media (hover:none){.tip{display:none!important}}
+
+/* ---------- phone & small tablet ---------- */
+@media (max-width:900px){
+  html,body{height:100%}
+  body{padding:10px 16px}
+  .wrap{min-height:100%;gap:10px}
+  .top{align-items:center}
+  h1{font-size:1.08rem;line-height:1.3}
+  h1 .more,.sub,.note,.panel{display:none}
+  .info-btn{display:inline-flex}
+  .stats{display:flex;flex:none;gap:8px;overflow-x:auto;background:none;border:0;border-radius:0;margin:0 -16px;padding:0 16px;scroll-snap-type:x proximity;scroll-padding:0 16px;scrollbar-width:none}
+  .stats::-webkit-scrollbar{display:none}
+  .stat{flex:0 0 auto;min-width:118px;border:1px solid var(--line);border-radius:10px;padding:5px 11px;scroll-snap-align:start}
+  .stat .k{font-size:.72rem}
+  .stat .v{font-size:1.04rem;line-height:1.3}
+  .stat .s{display:none}
+  .main{display:flex;flex-direction:column;align-items:stretch;flex:1 0 auto}
+  .mapbox{flex:1 0 auto;display:flex;flex-direction:column}
+  .toolbar{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;padding:8px 10px;gap:6px}
+  .toolbar::-webkit-scrollbar{display:none}
+  .toolbar,.stats{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+  .toolbar.at-end,.stats.at-end{-webkit-mask-image:none;mask-image:none}
+  .seg,.zoom{flex:none;flex-wrap:nowrap}
+  .seg button{font-size:.8rem;padding:5px 9px;white-space:nowrap}
+  .zoom > button{display:none}
+  .chk{font-size:.8rem;margin:0;white-space:nowrap;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);padding:4px 9px}
+  .stage{flex:1 0 260px}
+  svg#map{position:absolute;inset:0;width:100%;height:100%}
+  .fzoom{display:flex;flex-direction:column;gap:6px;position:absolute;top:10px;right:10px;z-index:1001}
+  .fzoom button{width:40px;height:40px;display:grid;place-items:center;font:inherit;font-size:1.15rem;line-height:1;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+  .taphint{display:block;position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:1001;pointer-events:none;white-space:nowrap;background:var(--fg);color:var(--surface);font-size:.82rem;font-weight:600;padding:6px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+  .legend{font-size:.74rem;gap:2px 10px;padding:6px 10px}
+  .lg-long{display:none} .lg-short{display:inline}
+  .ramp{width:110px}
+  .sheet{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;z-index:1200;max-height:min(60%,470px);background:var(--surface);color:var(--fg);border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.25);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .sheet.full{max-height:min(88%,760px)}
+  .sheet-head{position:relative;flex:none;display:flex;align-items:flex-start;gap:10px;padding:16px 16px 4px}
+  .grab{position:absolute;left:50%;top:6px;width:38px;height:4px;border-radius:2px;background:var(--line);transform:translateX(-50%)}
+  .sheet-title{flex:1;min-width:0}
+  .sheet-title .place{margin:0}
+  .sheet-close{flex:none;width:34px;height:34px;display:grid;place-items:center;font:inherit;font-size:1rem;line-height:1;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:50%;cursor:pointer}
+  .sheet-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:6px 16px 14px}
+  .headline{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+  .headline .score{margin:0;font-size:1.35rem}
+  .sheet .gap{margin:2px 0 10px}
+  .mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .mini > div{background:var(--surface);padding:5px 9px;min-width:0}
+  .mini .k{font-size:.7rem;color:var(--muted);line-height:1.3}
+  .mini .v{font-size:.95rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.35}
+  .more-btn{display:block;width:100%;margin-top:10px;font:inherit;font-size:.84rem;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:8px;padding:7px 10px;cursor:pointer}
+  .sheet .more{display:none}
+  .sheet.full .more{display:block;margin-top:14px}
+  
+  .views{padding:8px 10px 0}
+  .views button{font-size:.82rem;padding:5px 12px}
+  .op{font-size:.8rem;margin-right:2px}
+  .op input{width:76px}
+  #lmap{position:absolute;inset:0;width:100%;height:100%}
+  .tilenote{right:58px}
+  
+}
+@media (max-width:900px) and (max-height:540px){ .stats{display:none} .stage{flex-basis:200px} }
+@media (prefers-reduced-motion:reduce){.area{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="ttl">
+      <h1>ผลเลือกตั้ง สก. เขตบางซื่อ 2569<span class="more"> รายหน่วยเลือกตั้ง</span></h1>
+      <p class="sub">แขวงบางซื่อ 89 หน่วย และแขวงวงศ์สว่าง 54 หน่วย · ขอบเขตพื้นที่ตามที่แบ่งไว้ใน Google Earth · ชี้หรือแตะพื้นที่เพื่อดูรายละเอียด</p>
+    </div>
+    <button class="info-btn" id="infoBtn" type="button" aria-haspopup="dialog">วิธีคิด</button>
+  </header>
+
+  <section class="stats" id="stats" aria-label="สรุปทั้งเขต"></section>
+
+  <div class="main">
+    <div class="mapbox">
+      
+      <div class="views" role="group" aria-label="รูปแบบแผนที่">
+        <button id="v-plain" type="button" aria-pressed="true" data-view="plain">พื้นหลังขาว</button>
+        <button id="v-map" type="button" aria-pressed="false" data-view="map">แผนที่ดาวเทียม</button>
+      </div>
+      
+      <div class="toolbar">
+        <div class="seg" id="modes" role="group" aria-label="แสดงสีตาม">
+          <button id="m-result" type="button" aria-pressed="true" data-mode="result">ผลแพ้ชนะ</button>
+          <button id="m-turnout" type="button" aria-pressed="false" data-mode="turnout">% มาใช้สิทธิ์</button>
+          <button id="m-share" type="button" aria-pressed="false" data-mode="share">% เลือกเบอร์ 4</button>
+        </div>
+        <div class="zoom">
+          <label class="op" for="op" id="opWrap" hidden>ความทึบสี <input id="op" type="range" min="0" max="90" value="40"></label>
+          <label class="chk" for="lb"><input id="lb" type="checkbox" checked> เลขหน่วย</label>
+          <button id="z-in" type="button" aria-label="ซูมเข้า">＋</button>
+          <button id="z-out" type="button" aria-label="ซูมออก">－</button>
+          <button id="z-reset" type="button">ทั้งเขต</button>
+        </div>
+      </div>
+      <div class="stage" id="stage">
+        <svg id="map" role="img" aria-label="แผนที่หน่วยเลือกตั้งเขตบางซื่อ"></svg>
+        
+        <div id="lmap" hidden role="region" aria-label="แผนที่ดาวเทียมหน่วยเลือกตั้งเขตบางซื่อ"></div>
+        <div class="tilenote" id="tilenote" hidden>ภาพดาวเทียมโหลดไม่ได้ในหน้านี้ ขอบเขตและผลการเลือกตั้งยังใช้งานได้ตามปกติ</div>
+        
+        <div class="fzoom" role="group" aria-label="ซูมแผนที่">
+          <button id="fz-in" type="button" aria-label="ซูมเข้า">＋</button>
+          <button id="fz-out" type="button" aria-label="ซูมออก">－</button>
+          <button id="fz-reset" type="button" aria-label="ดูทั้งเขต"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <div class="taphint" id="taphint">แตะพื้นที่เพื่อดูผลแพ้ชนะ</div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <aside class="panel" id="panel" aria-live="polite">
+      <p class="hint">ชี้เมาส์ที่พื้นที่บนแผนที่ (หรือแตะบนมือถือ) เพื่อดูว่าเบอร์ 4 ชนะหรือแพ้ ด้วยคะแนนเท่าไหร่ และตัวเลขการมาใช้สิทธิ์ของพื้นที่นั้น คลิกเพื่อปักหมุดรายละเอียดไว้ที่แผงนี้</p>
+    </aside>
+  </div>
+
+  <p class="note" id="note">วิธีคิด: <span>"ห่างกัน" เทียบเบอร์ 4 กับคู่แข่งที่ได้คะแนนสูงสุดในพื้นที่นั้น</span> · <span>"% มาใช้สิทธิ์" = ผู้มาใช้สิทธิ์ ÷ ผู้มีสิทธิ์</span> · <span>"% เลือกเบอร์ 4" คิดจากผู้มาใช้สิทธิ์ทั้งหมด (รวม No Vote และบัตรเสีย) และแสดงฐานบัตรที่เลือกผู้สมัคร (แบบในชีต) ประกอบด้วย</span> · <span>พื้นที่ที่รวมหลายหน่วยแสดงผลรวมของหน่วยนั้น ๆ</span> · <span>ป้ายเลขหน่วย "บ" = แขวงบางซื่อ, "ว" = แขวงวงศ์สว่าง</span> · <span>ภาพดาวเทียมจาก Esri World Imagery, แผนที่ถนนจาก OpenStreetMap</span></p>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<section class="sheet" id="sheet" role="dialog" aria-modal="false" aria-label="รายละเอียดพื้นที่" hidden>
+  <div class="sheet-head"><span class="grab" aria-hidden="true"></span><div class="sheet-title" id="sheetTitle"></div><button type="button" class="sheet-close" id="sheetClose" aria-label="ปิด">✕</button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const DATA = {"polys":[{"kh":"บางซื่อ","units":[1,2,3,4],"ring":[[13.818802,100.543631],[13.817908,100.543057],[13.817049,100.542698],[13.815846,100.542008],[13.814531,100.541326],[13.811175,100.539555],[13.811505,100.542084],[13.812623,100.542451],[13.812904,100.542716],[13.812687,100.543282],[13.81316,100.543472],[13.814259,100.543892],[13.815338,100.544257],[13.816436,100.544446],[13.8176,100.544731],[13.817925,100.544788],[13.818454,100.544657],[13.819175,100.544441],[13.819627,100.544112],[13.818802,100.543631]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[5],"ring":[[13.812851,100.542719],[13.812619,100.54248],[13.811487,100.542084],[13.811153,100.53954],[13.80876,100.538194],[13.808494,100.538849],[13.808246,100.538847],[13.807835,100.539907],[13.807543,100.54064],[13.807294,100.541065],[13.807483,100.541122],[13.809215,100.541862],[13.810931,100.54262],[13.812667,100.543257],[13.812851,100.542719]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[6],"ring":[[13.80708,100.537266],[13.805762,100.540392],[13.807268,100.541048],[13.808221,100.538768],[13.808469,100.538822],[13.808692,100.538177],[13.80708,100.537266]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[7],"ring":[[13.799944,100.533551],[13.799766,100.533912],[13.804282,100.536169],[13.804291,100.535938],[13.804276,100.53594],[13.799944,100.533551]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[7],"ring":[[13.802856,100.537493],[13.800282,100.537276],[13.799771,100.537163],[13.799218,100.537107],[13.798148,100.537002],[13.79801,100.537275],[13.8029,100.539194],[13.803233,100.538534],[13.803491,100.538057],[13.803627,100.537695],[13.802856,100.537493]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[8,9,10,11],"ring":[[13.799733,100.533444],[13.797757,100.537204],[13.798052,100.537247],[13.798102,100.53698],[13.799516,100.537111],[13.800389,100.537204],[13.801276,100.537297],[13.802549,100.537441],[13.802882,100.537475],[13.803187,100.537549],[13.80352,100.537659],[13.803854,100.537679],[13.803148,100.539076],[13.803173,100.539141],[13.803244,100.53916],[13.803321,100.539168],[13.803372,100.539051],[13.803801,100.539273],[13.804394,100.53959],[13.805729,100.540324],[13.806302,100.538841],[13.807013,100.537217],[13.805926,100.536616],[13.804955,100.536133],[13.804279,100.53619],[13.801348,100.534725],[13.801215,100.534646],[13.801026,100.534552],[13.800689,100.534386],[13.800192,100.534147],[13.799746,100.533917],[13.799828,100.533747],[13.799935,100.533549],[13.799733,100.533444]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[12],"ring":[[13.809895,100.538523],[13.809659,100.53456],[13.808645,100.534306],[13.80885,100.538043],[13.809895,100.538523]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[13],"ring":[[13.807404,100.534068],[13.807464,100.535251],[13.807484,100.536263],[13.80748,100.537253],[13.808828,100.538018],[13.808641,100.534332],[13.807404,100.534068]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[14],"ring":[[13.809673,100.534546],[13.809895,100.538563],[13.811072,100.539223],[13.810562,100.534813],[13.809673,100.534546]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[15],"ring":[[13.81059,100.534846],[13.811094,100.539241],[13.814569,100.541055],[13.814296,100.539713],[13.813468,100.535522],[13.81059,100.534846]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[16],"ring":[[13.813504,100.53554],[13.814295,100.539419],[13.817298,100.538647],[13.816828,100.536285],[13.813504,100.53554]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[17],"ring":[[13.81925,100.543683],[13.819807,100.543939],[13.820203,100.543459],[13.820488,100.543027],[13.820649,100.542428],[13.820871,100.541668],[13.820997,100.540846],[13.821055,100.539866],[13.820341,100.539877],[13.819985,100.539918],[13.819607,100.539989],[13.819643,100.540228],[13.819498,100.540266],[13.819569,100.540973],[13.818513,100.541198],[13.818072,100.538913],[13.817458,100.53906],[13.817712,100.540367],[13.818068,100.540285],[13.818128,100.540651],[13.818198,100.54103],[13.818274,100.541257],[13.818328,100.541732],[13.818474,100.543217],[13.81925,100.543683]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[18],"ring":[[13.814277,100.53943],[13.814654,100.541124],[13.818468,100.543251],[13.818297,100.541759],[13.818039,100.540309],[13.817676,100.540385],[13.817469,100.539354],[13.817311,100.538693],[13.814277,100.53943]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[19],"ring":[[13.818115,100.536056],[13.818867,100.536274],[13.818741,100.535541],[13.818624,100.53485],[13.817928,100.534872],[13.817917,100.534858],[13.817693,100.533724],[13.81765,100.533704],[13.816413,100.534019],[13.816623,100.535189],[13.816721,100.535715],[13.818184,100.536076],[13.818115,100.536056]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[20],"ring":[[13.818595,100.534839],[13.818361,100.533547],[13.8177,100.533688],[13.817953,100.534852],[13.818595,100.534839]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[21],"ring":[[13.821692,100.533853],[13.81843,100.533583],[13.818887,100.536188],[13.82136,100.536814],[13.821692,100.533853]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[22],"ring":[[13.816871,100.53622],[13.817439,100.539021],[13.818095,100.538887],[13.81853,100.541152],[13.819563,100.54095],[13.819468,100.540248],[13.819622,100.540208],[13.819593,100.539979],[13.820086,100.539883],[13.820356,100.539852],[13.820581,100.539854],[13.821067,100.539843],[13.821213,100.538236],[13.821337,100.537313],[13.819054,100.536794],[13.816871,100.53622]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[23],"ring":[[13.799318,100.531592],[13.798441,100.531439],[13.798311,100.532327],[13.799462,100.532936],[13.799788,100.532414],[13.799924,100.531708],[13.799318,100.531592]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[24],"ring":[[13.801036,100.532553],[13.800318,100.532413],[13.800046,100.532582],[13.79982,100.533127],[13.800918,100.533634],[13.804602,100.535751],[13.804895,100.533467],[13.801036,100.532553]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[25],"ring":[[13.800428,100.529214],[13.799804,100.532438],[13.799844,100.532445],[13.800239,100.532145],[13.800727,100.529373],[13.800428,100.529214]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[25],"ring":[[13.804916,100.533464],[13.804621,100.535756],[13.804825,100.535675],[13.805486,100.533559],[13.804916,100.533464]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[26],"ring":[[13.799924,100.531683],[13.800124,100.530666],[13.799418,100.530502],[13.799454,100.53025],[13.799073,100.530155],[13.798944,100.530134],[13.799045,100.529749],[13.798748,100.529654],[13.798526,100.530517],[13.798455,100.531055],[13.798433,100.531415],[13.799181,100.531538],[13.799371,100.531565],[13.799557,100.531623],[13.799924,100.531683]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[27],"ring":[[13.798969,100.530126],[13.799481,100.530238],[13.799431,100.530508],[13.800123,100.53064],[13.800398,100.529189],[13.798951,100.528429],[13.798962,100.528908],[13.798897,100.529112],[13.798827,100.5294],[13.798744,100.529633],[13.799044,100.529758],[13.798969,100.530126]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[28],"ring":[[13.800726,100.529341],[13.800512,100.530857],[13.800236,100.532133],[13.800421,100.532078],[13.800723,100.532149],[13.801346,100.532244],[13.801369,100.531898],[13.801565,100.530828],[13.80174,100.529926],[13.800726,100.529341]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[29],"ring":[[13.80961,100.534014],[13.809453,100.53271],[13.80948,100.532504],[13.80603,100.532461],[13.805883,100.533162],[13.805498,100.534592],[13.805008,100.535935],[13.807444,100.537251],[13.807451,100.535821],[13.807364,100.534046],[13.807305,100.533539],[13.808487,100.533814],[13.80961,100.534014]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[30],"ring":[[13.811567,100.534502],[13.811336,100.532496],[13.809459,100.532508],[13.809646,100.534012],[13.811567,100.534502]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[31],"ring":[[13.811599,100.534469],[13.816693,100.535744],[13.816541,100.534838],[13.816388,100.534034],[13.812013,100.532888],[13.811404,100.532937],[13.811599,100.534469]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[32],"ring":[[13.817427,100.532228],[13.817681,100.533666],[13.818314,100.533525],[13.818011,100.532298],[13.817427,100.532228]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[33],"ring":[[13.818042,100.532272],[13.818341,100.533526],[13.821665,100.533823],[13.821741,100.532771],[13.818042,100.532272]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[34],"ring":[[13.812475,100.531637],[13.812612,100.533034],[13.816365,100.533982],[13.817652,100.533694],[13.817381,100.532255],[13.812475,100.531637]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[35],"ring":[[13.812018,100.53286],[13.812579,100.533025],[13.812502,100.5324],[13.812423,100.531639],[13.812046,100.531623],[13.809712,100.531345],[13.809782,100.532074],[13.809832,100.532461],[13.810794,100.532441],[13.811354,100.532494],[13.811376,100.532551],[13.811391,100.532659],[13.811395,100.53275],[13.811409,100.53291],[13.812018,100.53286]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[36],"ring":[[13.809492,100.531133],[13.809367,100.530093],[13.808271,100.53015],[13.807174,100.530168],[13.807182,100.530828],[13.808425,100.530996],[13.809492,100.531133]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[37],"ring":[[13.806465,100.53097],[13.806398,100.531232],[13.806039,100.53244],[13.809799,100.532473],[13.809691,100.531357],[13.806465,100.53097]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[38],"ring":[[13.807167,100.530744],[13.807147,100.530145],[13.807277,100.530149],[13.807527,100.530144],[13.807594,100.530145],[13.808984,100.530089],[13.80875,100.52792],[13.80843,100.527936],[13.808388,100.527616],[13.808348,100.526764],[13.806495,100.526889],[13.8065,100.528802],[13.806494,100.529747],[13.80646,100.530646],[13.807167,100.530744]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[39],"ring":[[13.806296,100.521598],[13.805489,100.521569],[13.805433,100.522594],[13.80543,100.523274],[13.804683,100.523326],[13.804655,100.525022],[13.806327,100.524962],[13.806296,100.521598]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[40],"ring":[[13.805017,100.525045],[13.804976,100.526892],[13.806301,100.526853],[13.806314,100.525017],[13.805017,100.525045]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[41],"ring":[[13.806316,100.529033],[13.806352,100.528099],[13.805537,100.528117],[13.805558,100.529071],[13.806316,100.529033]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[42],"ring":[[13.805067,100.529124],[13.805149,100.530476],[13.80511,100.530882],[13.803444,100.5306],[13.801769,100.530004],[13.801406,100.532246],[13.8043,100.532944],[13.804887,100.533135],[13.805553,100.533264],[13.805958,100.532019],[13.806239,100.530682],[13.806285,100.529912],[13.806314,100.529078],[13.805067,100.529124]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[43],"ring":[[13.806475,100.526859],[13.808869,100.526714],[13.808885,100.52649],[13.808755,100.525322],[13.808724,100.525288],[13.806525,100.525318],[13.806475,100.526859]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[44],"ring":[[13.805476,100.5269],[13.805534,100.528119],[13.80632,100.528089],[13.806287,100.526867],[13.805476,100.5269]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[45],"ring":[[13.804423,100.52819],[13.804462,100.529103],[13.804525,100.530475],[13.805112,100.530538],[13.805078,100.529085],[13.805539,100.529075],[13.805519,100.5281],[13.805106,100.528091],[13.80474,100.528121],[13.80466,100.528195],[13.804423,100.52819]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[46],"ring":[[13.803604,100.528251],[13.803593,100.53041],[13.804503,100.530455],[13.804396,100.528193],[13.803604,100.528251]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[47],"ring":[[13.80653,100.525271],[13.808751,100.525255],[13.80855,100.523629],[13.806513,100.523685],[13.80653,100.525271]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[48],"ring":[[13.806473,100.521699],[13.806524,100.523603],[13.808506,100.52358],[13.808498,100.523189],[13.80842,100.521786],[13.806473,100.521699]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[49],"ring":[[13.803501,100.521481],[13.803398,100.523322],[13.804374,100.523501],[13.804438,100.525049],[13.804617,100.525048],[13.804615,100.523322],[13.805411,100.523223],[13.805464,100.52159],[13.803501,100.521481]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[50],"ring":[[13.807531,100.521517],[13.807575,100.520784],[13.807912,100.520802],[13.807924,100.520643],[13.807897,100.520383],[13.807891,100.520218],[13.807879,100.520114],[13.807886,100.519927],[13.807927,100.519838],[13.807924,100.519596],[13.807912,100.518792],[13.805516,100.519011],[13.805475,100.520293],[13.805511,100.5215],[13.807531,100.521517]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[51],"ring":[[13.803003,100.521464],[13.802636,100.521454],[13.802564,100.522815],[13.802569,100.523225],[13.802614,100.523914],[13.80266,100.525328],[13.802605,100.527636],[13.803154,100.527613],[13.803182,100.527509],[13.803183,100.525369],[13.803074,100.522805],[13.803003,100.521464]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[52],"ring":[[13.802527,100.530082],[13.802628,100.527663],[13.801703,100.527584],[13.801526,100.529559],[13.802527,100.530082]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[53],"ring":[[13.80307,100.521499],[13.803236,100.527717],[13.802654,100.527712],[13.802555,100.530108],[13.803551,100.530376],[13.803553,100.528194],[13.804083,100.528201],[13.805487,100.528099],[13.805474,100.527454],[13.805442,100.526957],[13.804991,100.526913],[13.804996,100.525132],[13.804398,100.525068],[13.804303,100.523508],[13.803351,100.52341],[13.803466,100.521529],[13.80307,100.521499]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[54],"ring":[[13.802604,100.52148],[13.800416,100.521499],[13.800341,100.52304],[13.800208,100.524403],[13.801016,100.524511],[13.802604,100.524548],[13.802604,100.52148]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[55],"ring":[[13.800379,100.52147],[13.800105,100.521472],[13.799831,100.523439],[13.799465,100.524509],[13.799255,100.525036],[13.799302,100.525649],[13.798922,100.528261],[13.800744,100.529207],[13.800799,100.529237],[13.800914,100.528341],[13.80093,100.527533],[13.801033,100.526031],[13.801128,100.525257],[13.801308,100.525243],[13.801405,100.524574],[13.800184,100.52448],[13.800379,100.52147]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[56],"ring":[[13.801453,100.524571],[13.801368,100.525247],[13.801157,100.525319],[13.800979,100.528178],[13.800815,100.529267],[13.80149,100.529575],[13.801601,100.528189],[13.801656,100.527549],[13.80258,100.52761],[13.802587,100.52461],[13.801453,100.524571]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[57],"ring":[[13.802548,100.519806],[13.802719,100.518625],[13.802691,100.518597],[13.800334,100.517938],[13.800269,100.51808],[13.800241,100.518553],[13.800245,100.519482],[13.800016,100.521175],[13.80187,100.521179],[13.801989,100.520386],[13.802049,100.519768],[13.802548,100.519806]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[58],"ring":[[13.802005,100.520508],[13.801925,100.521201],[13.805438,100.521502],[13.805457,100.521155],[13.80543,100.520336],[13.805456,100.519059],[13.80451,100.518866],[13.802777,100.518658],[13.802617,100.51986],[13.802085,100.519857],[13.802067,100.520255],[13.802005,100.520508]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[59],"ring":[[13.808464,100.521763],[13.808432,100.522141],[13.80852,100.522451],[13.808462,100.522802],[13.808533,100.523201],[13.808677,100.523944],[13.80874,100.524686],[13.808829,100.525433],[13.808874,100.525816],[13.808895,100.52618],[13.808925,100.526324],[13.808982,100.526449],[13.808957,100.526686],[13.808945,100.526775],[13.808957,100.526866],[13.809048,100.527003],[13.809015,100.52721],[13.80907,100.527522],[13.809139,100.527734],[13.80915,100.527893],[13.809133,100.52805],[13.809178,100.528236],[13.809577,100.528119],[13.80982,100.52805],[13.810136,100.527942],[13.811876,100.527296],[13.81078,100.521894],[13.808464,100.521763]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[60],"ring":[[13.808887,100.526709],[13.808355,100.526758],[13.808386,100.527344],[13.808439,100.527928],[13.808758,100.527919],[13.808819,100.528437],[13.808883,100.528982],[13.809001,100.530095],[13.809465,100.530059],[13.810891,100.529853],[13.812373,100.529638],[13.811868,100.527352],[13.809178,100.528282],[13.809102,100.528122],[13.809099,100.527956],[13.809123,100.52781],[13.80903,100.527484],[13.808995,100.527055],[13.808887,100.526709]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[61],"ring":[[13.8094,100.530082],[13.809482,100.530552],[13.8095,100.531081],[13.812772,100.531492],[13.812368,100.529665],[13.810891,100.529875],[13.8094,100.530082]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[62],"ring":[[13.807971,100.518847],[13.808041,100.520819],[13.807636,100.520862],[13.807608,100.521596],[13.809131,100.521725],[13.808852,100.518631],[13.807971,100.518847]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[63],"ring":[[13.810021,100.521713],[13.809803,100.518443],[13.808947,100.518652],[13.809223,100.521668],[13.810021,100.521713]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[64],"ring":[[13.813498,100.526681],[13.813241,100.52456],[13.81201,100.524785],[13.811414,100.521798],[13.811354,100.521901],[13.810818,100.521962],[13.811925,100.527296],[13.813498,100.526681]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[65],"ring":[[13.811986,100.527743],[13.812406,100.529683],[13.81281,100.531494],[13.813964,100.531634],[13.813533,100.529847],[13.813148,100.52813],[13.81304,100.527614],[13.812689,100.527702],[13.812559,100.527629],[13.812486,100.527637],[13.811986,100.527743]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[66],"ring":[[13.811469,100.521865],[13.812048,100.524727],[13.813284,100.524431],[13.813559,100.526668],[13.81327,100.524438],[13.812371,100.521823],[13.811469,100.521865]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[67],"ring":[[13.812407,100.521829],[13.813384,100.524846],[13.81361,100.526654],[13.814502,100.526362],[13.813129,100.521596],[13.812407,100.521829]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[68],"ring":[[13.811902,100.527363],[13.811983,100.527721],[13.812513,100.527589],[13.812695,100.527686],[13.813053,100.527605],[13.813473,100.529544],[13.813968,100.531622],[13.814423,100.531725],[13.815067,100.531793],[13.814465,100.529312],[13.814384,100.528915],[13.814298,100.528502],[13.814446,100.528437],[13.814388,100.528028],[13.814341,100.527856],[13.814336,100.527685],[13.81426,100.52731],[13.814141,100.52659],[13.811902,100.527363]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[69],"ring":[[13.815072,100.531773],[13.815889,100.531871],[13.815733,100.531213],[13.81567,100.53087],[13.81559,100.530537],[13.815292,100.529203],[13.815215,100.528851],[13.815114,100.528484],[13.815035,100.528181],[13.815001,100.52786],[13.814953,100.527546],[13.814868,100.527188],[13.814789,100.526835],[13.814667,100.526419],[13.814157,100.526593],[13.81435,100.52771],[13.814357,100.527859],[13.814426,100.528167],[13.814466,100.528468],[13.814339,100.528526],[13.814447,100.529179],[13.8146,100.529822],[13.814759,100.530476],[13.814921,100.531113],[13.815072,100.531773]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[70],"ring":[[13.816914,100.531982],[13.817502,100.53202],[13.81605,100.525955],[13.815343,100.526177],[13.816914,100.531982]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[71],"ring":[[13.815926,100.531868],[13.816863,100.531976],[13.815331,100.526177],[13.814719,100.5264],[13.815043,100.527739],[13.815089,100.528258],[13.815335,100.529162],[13.815655,100.530607],[13.81578,100.53125],[13.815842,100.531562],[13.815926,100.531868]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[72],"ring":[[13.816107,100.525904],[13.817551,100.531981],[13.819182,100.53213],[13.818728,100.530663],[13.818243,100.528847],[13.818439,100.528847],[13.81752,100.525447],[13.816107,100.525904]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[73,74,75,76],"ring":[[13.82059,100.532243],[13.818753,100.525023],[13.81756,100.525339],[13.818527,100.52894],[13.81835,100.528973],[13.819284,100.532176],[13.82059,100.532243]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[77],"ring":[[13.821179,100.532514],[13.821197,100.532367],[13.821183,100.532211],[13.821093,100.531828],[13.82092,100.531072],[13.820797,100.530727],[13.820752,100.530568],[13.820657,100.530182],[13.820705,100.530156],[13.820705,100.530112],[13.820613,100.529624],[13.820395,100.528608],[13.820238,100.527992],[13.820282,100.528004],[13.820209,100.527634],[13.820083,100.527142],[13.819951,100.526648],[13.819718,100.525705],[13.819575,100.525216],[13.819446,100.524738],[13.818855,100.524982],[13.820673,100.532333],[13.821179,100.532514]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[78],"ring":[[13.821222,100.53252],[13.82171,100.532572],[13.821752,100.531939],[13.821736,100.531282],[13.821507,100.530435],[13.820528,100.526272],[13.820399,100.525741],[13.820177,100.525077],[13.820034,100.524576],[13.819739,100.524619],[13.819466,100.52473],[13.819528,100.525011],[13.819605,100.525275],[13.819753,100.525789],[13.820037,100.526811],[13.820012,100.526843],[13.820131,100.52722],[13.820248,100.527751],[13.820302,100.528035],[13.820261,100.528027],[13.820405,100.528612],[13.820731,100.530149],[13.820673,100.530196],[13.820755,100.530529],[13.820813,100.530718],[13.820932,100.531016],[13.821059,100.531533],[13.821192,100.532042],[13.821238,100.532287],[13.821222,100.53252]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[79],"ring":[[13.820671,100.524289],[13.820088,100.524544],[13.8202,100.524995],[13.820322,100.525408],[13.820569,100.526234],[13.820766,100.527053],[13.820944,100.527882],[13.821156,100.528768],[13.821374,100.529656],[13.821801,100.531368],[13.821866,100.530768],[13.821941,100.5302],[13.82197,100.529013],[13.821982,100.52818],[13.821853,100.527298],[13.821431,100.52579],[13.821081,100.525037],[13.8209,100.524683],[13.820671,100.524289]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[80],"ring":[[13.816674,100.520467],[13.816462,100.520518],[13.816223,100.520585],[13.815799,100.520733],[13.815963,100.521348],[13.816141,100.521934],[13.816132,100.522224],[13.816245,100.522572],[13.816337,100.522839],[13.816413,100.523052],[13.816343,100.523086],[13.816355,100.523141],[13.816724,100.522989],[13.817048,100.522851],[13.817144,100.522766],[13.817336,100.522719],[13.817565,100.522623],[13.817603,100.522643],[13.817656,100.522632],[13.817777,100.52258],[13.817801,100.522607],[13.817903,100.522576],[13.817977,100.522546],[13.818069,100.522518],[13.818105,100.522537],[13.818196,100.522503],[13.818213,100.522435],[13.818287,100.522412],[13.818487,100.522325],[13.818604,100.522297],[13.81877,100.522241],[13.818853,100.522213],[13.818925,100.522218],[13.817392,100.520549],[13.816892,100.520517],[13.816674,100.520467]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[81],"ring":[[13.815791,100.52074],[13.814545,100.521139],[13.815239,100.523373],[13.816396,100.523054],[13.816185,100.52247],[13.816105,100.522193],[13.816077,100.521904],[13.815791,100.52074]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[82],"ring":[[13.816325,100.523086],[13.815264,100.523412],[13.815668,100.524607],[13.816639,100.524309],[13.816325,100.523086]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[83],"ring":[[13.816349,100.523161],[13.816949,100.525532],[13.817466,100.525398],[13.817618,100.525269],[13.817855,100.525188],[13.818106,100.525142],[13.818323,100.52505],[13.818535,100.524965],[13.818792,100.524911],[13.819258,100.524763],[13.819705,100.524577],[13.820175,100.524467],[13.820637,100.524256],[13.820421,100.52394],[13.820234,100.523694],[13.819812,100.523184],[13.818937,100.522227],[13.818463,100.522342],[13.818218,100.522452],[13.818202,100.522507],[13.818096,100.52255],[13.818062,100.522532],[13.817914,100.522586],[13.817796,100.522621],[13.817773,100.522598],[13.817649,100.522658],[13.817536,100.52266],[13.817148,100.522812],[13.816756,100.523004],[13.816349,100.523161]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[84],"ring":[[13.814527,100.521174],[13.813149,100.521526],[13.813629,100.523076],[13.81497,100.522633],[13.814527,100.521174]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[85],"ring":[[13.813667,100.523087],[13.81402,100.524039],[13.81528,100.523572],[13.815008,100.522639],[13.813667,100.523087]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[86],"ring":[[13.81528,100.523637],[13.81402,100.524114],[13.814618,100.526316],[13.816921,100.525551],[13.816649,100.524338],[13.815625,100.524692],[13.81528,100.523637]],"kmlcolor":"red"},{"kh":"บางซื่อ","units":[87],"ring":[[13.810753,100.518045],[13.810599,100.518309],[13.809805,100.518401],[13.810023,100.52171],[13.811892,100.52167],[13.812749,100.521499],[13.812839,100.520813],[13.812404,100.519416],[13.812442,100.519152],[13.811866,100.517782],[13.810753,100.518045]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[88],"ring":[[13.816334,100.520336],[13.815621,100.519488],[13.813902,100.517538],[13.813832,100.517628],[13.814753,100.520716],[13.814896,100.520822],[13.815117,100.520773],[13.816334,100.520336]],"kmlcolor":"green"},{"kh":"บางซื่อ","units":[89],"ring":[[13.813328,100.517157],[13.812028,100.517599],[13.812534,100.518995],[13.812896,100.520439],[13.812839,100.521473],[13.814606,100.520843],[13.813328,100.517157]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[1],"ring":[[13.823399,100.532679],[13.823904,100.532576],[13.823811,100.532266],[13.823915,100.532206],[13.823838,100.531928],[13.823951,100.531878],[13.82376,100.531216],[13.823612,100.5312],[13.823433,100.530491],[13.8232,100.529724],[13.823005,100.528871],[13.822917,100.528877],[13.822869,100.528507],[13.822755,100.528259],[13.822675,100.527922],[13.822565,100.527546],[13.82266,100.528796],[13.8226,100.529892],[13.822461,100.531252],[13.822335,100.532683],[13.822713,100.532685],[13.823052,100.532682],[13.823399,100.532679]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[2],"ring":[[13.822293,100.533877],[13.82211,100.535289],[13.8227,100.535072],[13.822722,100.535018],[13.822995,100.534972],[13.823397,100.534834],[13.823509,100.535344],[13.823592,100.535843],[13.823607,100.535955],[13.824487,100.535723],[13.824585,100.535675],[13.824723,100.53566],[13.825088,100.53559],[13.825036,100.534899],[13.825026,100.534898],[13.824917,100.533518],[13.824681,100.532502],[13.824065,100.532763],[13.823349,100.532936],[13.822868,100.532919],[13.822313,100.532864],[13.822276,100.533259],[13.82233,100.533277],[13.822293,100.533877]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[3],"ring":[[13.8252,100.536518],[13.826199,100.536253],[13.827378,100.536502],[13.825974,100.531507],[13.824718,100.5325],[13.824979,100.533638],[13.8251,100.535066],[13.8252,100.536518]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[4],"ring":[[13.824698,100.53219],[13.824797,100.532171],[13.824647,100.531735],[13.824544,100.53173],[13.824444,100.531494],[13.824351,100.531198],[13.824022,100.530191],[13.823864,100.529683],[13.823733,100.529173],[13.823722,100.529027],[13.823095,100.527002],[13.822428,100.526915],[13.822598,100.527599],[13.822786,100.528291],[13.822837,100.528418],[13.822889,100.528491],[13.822931,100.528855],[13.823013,100.528855],[13.823162,100.529525],[13.823594,100.531037],[13.823634,100.531197],[13.823777,100.5312],[13.823969,100.531881],[13.823864,100.531932],[13.823936,100.532203],[13.823839,100.532267],[13.82395,100.532565],[13.824698,100.53219]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[5],"ring":[[13.825538,100.531552],[13.825407,100.53141],[13.825259,100.530976],[13.825031,100.530358],[13.824819,100.529838],[13.82456,100.529387],[13.823603,100.527129],[13.823535,100.527052],[13.823377,100.527046],[13.823126,100.527045],[13.823783,100.529209],[13.824067,100.530247],[13.824413,100.531295],[13.824556,100.531676],[13.824644,100.531691],[13.824698,100.531829],[13.824818,100.532147],[13.825028,100.532056],[13.825201,100.531896],[13.825377,100.531726],[13.825538,100.531552]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[6],"ring":[[13.822425,100.526891],[13.823041,100.526988],[13.823099,100.526994],[13.823133,100.527036],[13.823336,100.527036],[13.823625,100.527054],[13.823706,100.527207],[13.82388,100.527614],[13.824123,100.528224],[13.824585,100.529364],[13.824857,100.52989],[13.825112,100.530514],[13.825362,100.531198],[13.825454,100.531402],[13.825592,100.531495],[13.825887,100.53117],[13.825474,100.530209],[13.825068,100.529236],[13.824651,100.528279],[13.824156,100.527333],[13.823582,100.526375],[13.823411,100.526073],[13.823234,100.52577],[13.822877,100.524734],[13.822484,100.523715],[13.821348,100.524098],[13.821722,100.524786],[13.82204,100.525496],[13.822425,100.526891]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[7],"ring":[[13.828281,100.535218],[13.828105,100.534938],[13.828279,100.534855],[13.828166,100.534556],[13.827962,100.533934],[13.827639,100.53294],[13.82775,100.532829],[13.827679,100.532613],[13.827174,100.531529],[13.82691,100.531016],[13.827132,100.530885],[13.826888,100.530319],[13.82598,100.531392],[13.826939,100.534816],[13.827429,100.53648],[13.828011,100.536317],[13.82797,100.536121],[13.828196,100.536049],[13.828265,100.535726],[13.828129,100.535512],[13.828339,100.535386],[13.828365,100.53534],[13.828281,100.535218]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[8],"ring":[[13.826904,100.530317],[13.827165,100.53088],[13.826927,100.531025],[13.827186,100.531517],[13.827704,100.53262],[13.827761,100.53285],[13.827671,100.532938],[13.827985,100.533868],[13.828192,100.534528],[13.828318,100.534858],[13.828165,100.534954],[13.828382,100.535348],[13.828341,100.535397],[13.828282,100.53544],[13.828153,100.535525],[13.828275,100.535739],[13.828209,100.536048],[13.828967,100.537885],[13.829641,100.53755],[13.830308,100.53713],[13.830065,100.536721],[13.830061,100.536333],[13.829398,100.535316],[13.828916,100.534573],[13.828787,100.534159],[13.828595,100.533675],[13.827774,100.531939],[13.827431,100.531109],[13.827177,100.530541],[13.827134,100.530445],[13.826999,100.53015],[13.826904,100.530317]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[9],"ring":[[13.827024,100.530156],[13.827386,100.530957],[13.827699,100.531726],[13.828186,100.532786],[13.828671,100.533705],[13.829004,100.534614],[13.829618,100.535573],[13.829831,100.535917],[13.830078,100.536269],[13.83014,100.536712],[13.830275,100.537062],[13.830438,100.537048],[13.830679,100.533176],[13.830358,100.531515],[13.829986,100.530709],[13.82928,100.529774],[13.828285,100.528552],[13.827024,100.530156]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[10],"ring":[[13.828686,100.527916],[13.828448,100.527683],[13.828354,100.527648],[13.828279,100.527539],[13.827937,100.527101],[13.827577,100.527432],[13.827348,100.527684],[13.826994,100.527242],[13.825838,100.52596],[13.824172,100.527311],[13.824673,100.528231],[13.825072,100.529197],[13.825914,100.53113],[13.828686,100.527916]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[11],"ring":[[13.827348,100.527204],[13.82755,100.527417],[13.827937,100.527083],[13.828043,100.527227],[13.829745,100.52528],[13.829324,100.524898],[13.828566,100.52574],[13.828223,100.526156],[13.827997,100.526565],[13.827348,100.527204]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[12],"ring":[[13.831586,100.523062],[13.831502,100.522987],[13.831418,100.522921],[13.83094,100.523445],[13.830251,100.524253],[13.829928,100.524595],[13.830034,100.524699],[13.829654,100.525157],[13.829786,100.525258],[13.828099,100.527252],[13.828363,100.527564],[13.8287,100.527864],[13.832136,100.523719],[13.831849,100.523421],[13.83189,100.523367],[13.831586,100.523062]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[13],"ring":[[13.823111,100.522853],[13.822933,100.52357],[13.822528,100.523759],[13.823203,100.52565],[13.823561,100.526315],[13.823613,100.526334],[13.823643,100.526397],[13.824157,100.52728],[13.824501,100.527031],[13.824492,100.526919],[13.824927,100.526583],[13.825781,100.525938],[13.823111,100.522853]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[14],"ring":[[13.822636,100.522521],[13.82192,100.521627],[13.82163,100.52181],[13.821338,100.521955],[13.821343,100.522023],[13.820674,100.522274],[13.821031,100.523217],[13.82116,100.523501],[13.821157,100.523589],[13.821282,100.523856],[13.82138,100.52403],[13.82213,100.523804],[13.822331,100.523731],[13.822458,100.52369],[13.822544,100.52371],[13.822888,100.523566],[13.822943,100.52324],[13.823035,100.522915],[13.822636,100.522521]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[15],"ring":[[13.820813,100.520412],[13.820112,100.519613],[13.819615,100.519224],[13.819384,100.519415],[13.820672,100.522264],[13.821328,100.522018],[13.821323,100.521946],[13.821401,100.521898],[13.821595,100.521813],[13.821918,100.521613],[13.820813,100.520412]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[16],"ring":[[13.81931,100.51943],[13.818183,100.520232],[13.820202,100.522536],[13.820771,100.523267],[13.821319,100.524055],[13.821366,100.524035],[13.821278,100.523871],[13.821139,100.523587],[13.821127,100.523497],[13.820981,100.52317],[13.820679,100.522366],[13.81931,100.51943]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[17],"ring":[[13.818131,100.520187],[13.8196,100.519178],[13.820858,100.519994],[13.821,100.519929],[13.821115,100.519732],[13.821271,100.519327],[13.821378,100.51902],[13.821378,100.518714],[13.820897,100.518395],[13.820405,100.517899],[13.819963,100.517392],[13.81976,100.517137],[13.819523,100.516912],[13.819315,100.517376],[13.81923,100.517533],[13.819243,100.517802],[13.818924,100.518429],[13.817859,100.517307],[13.817293,100.516758],[13.816727,100.516678],[13.815618,100.517342],[13.818131,100.520187]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[18],"ring":[[13.820556,100.514676],[13.818892,100.512554],[13.818509,100.511986],[13.818026,100.511449],[13.817492,100.510899],[13.816745,100.510466],[13.815127,100.514599],[13.815603,100.514921],[13.815724,100.514763],[13.815904,100.514708],[13.816536,100.51446],[13.817022,100.514547],[13.817491,100.514752],[13.818327,100.51522],[13.818292,100.515432],[13.818119,100.515595],[13.817885,100.515857],[13.817557,100.516162],[13.817482,100.516251],[13.817513,100.516366],[13.817577,100.516511],[13.81906,100.518113],[13.81919,100.517826],[13.819177,100.517534],[13.819334,100.517252],[13.819483,100.516892],[13.819712,100.516567],[13.819904,100.516143],[13.820048,100.515693],[13.820017,100.515447],[13.820012,100.515153],[13.820229,100.514844],[13.820556,100.514676]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[19],"ring":[[13.819924,100.510132],[13.820197,100.510327],[13.820351,100.510458],[13.820503,100.510386],[13.82106,100.510792],[13.821938,100.511571],[13.822578,100.510854],[13.823072,100.511522],[13.823302,100.511891],[13.823432,100.512034],[13.823564,100.511972],[13.824426,100.513465],[13.82459,100.512893],[13.825832,100.512122],[13.826051,100.511198],[13.826038,100.511095],[13.825557,100.510953],[13.825191,100.510843],[13.825099,100.510336],[13.825511,100.509487],[13.825323,100.509367],[13.824915,100.509398],[13.824642,100.509634],[13.824514,100.510204],[13.824168,100.510267],[13.823636,100.509855],[13.823482,100.50924],[13.823345,100.508836],[13.823159,100.5085],[13.822861,100.508063],[13.822749,100.50778],[13.822305,100.507736],[13.821749,100.507694],[13.821441,100.507474],[13.821199,100.50781],[13.820776,100.508466],[13.820601,100.508753],[13.820224,100.509423],[13.819924,100.510132]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[20],"ring":[[13.822568,100.510911],[13.821939,100.511593],[13.820983,100.510768],[13.820505,100.510441],[13.820323,100.510492],[13.819917,100.510171],[13.819173,100.512771],[13.819374,100.512948],[13.81949,100.513166],[13.819574,100.513316],[13.819719,100.513509],[13.819911,100.513795],[13.820097,100.514047],[13.820322,100.514329],[13.820584,100.514678],[13.820925,100.515324],[13.821251,100.515048],[13.821554,100.514651],[13.822022,100.51378],[13.822279,100.513278],[13.822645,100.51268],[13.823356,100.512075],[13.822568,100.510911]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[21],"ring":[[13.821574,100.520871],[13.821802,100.520235],[13.821885,100.519956],[13.822091,100.520041],[13.822306,100.519514],[13.822196,100.519458],[13.822646,100.518464],[13.822858,100.518533],[13.823329,100.517155],[13.823198,100.517118],[13.823642,100.516125],[13.823155,100.515662],[13.822398,100.515149],[13.821634,100.514563],[13.821359,100.515075],[13.820941,100.515403],[13.82056,100.514709],[13.82025,100.514874],[13.820045,100.515161],[13.82004,100.515473],[13.820088,100.515599],[13.820013,100.51592],[13.819807,100.51644],[13.819551,100.516918],[13.819797,100.517153],[13.820012,100.517427],[13.820448,100.51792],[13.820912,100.518376],[13.821405,100.518687],[13.821394,100.519004],[13.821268,100.519406],[13.8211,100.519805],[13.82101,100.519935],[13.820851,100.520014],[13.821574,100.520871]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[22],"ring":[[13.821634,100.514536],[13.823513,100.515935],[13.823597,100.516056],[13.823761,100.516055],[13.823986,100.516271],[13.824171,100.516501],[13.824316,100.516672],[13.824456,100.516915],[13.824777,100.517192],[13.824917,100.516997],[13.825227,100.516656],[13.826903,100.515094],[13.826268,100.513713],[13.826006,100.513179],[13.824804,100.513352],[13.824621,100.513057],[13.824425,100.513681],[13.823543,100.512007],[13.822974,100.512433],[13.82253,100.512928],[13.82208,100.513701],[13.821634,100.514536]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[23],"ring":[[13.82371,100.516126],[13.82359,100.516306],[13.823488,100.516551],[13.823239,100.517088],[13.823375,100.517086],[13.822868,100.518561],[13.822644,100.51849],[13.822211,100.519447],[13.822324,100.519505],[13.822209,100.519776],[13.822096,100.520056],[13.821919,100.519983],[13.821593,100.520869],[13.823167,100.522612],[13.823329,100.522047],[13.82348,100.521474],[13.823532,100.52095],[13.823708,100.520292],[13.823867,100.519636],[13.824325,100.518148],[13.824508,100.517678],[13.824763,100.517204],[13.824253,100.516626],[13.824127,100.516464],[13.823984,100.516375],[13.82371,100.516126]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[24],"ring":[[13.824259,100.519661],[13.824147,100.519649],[13.823933,100.519595],[13.823596,100.520824],[13.82355,100.521119],[13.823532,100.521411],[13.823397,100.522033],[13.823201,100.522639],[13.823839,100.523352],[13.824039,100.523236],[13.824258,100.523077],[13.824402,100.52304],[13.824498,100.52296],[13.824548,100.522576],[13.82419,100.522431],[13.824281,100.522002],[13.824395,100.521889],[13.82454,100.52174],[13.824603,100.521535],[13.824607,100.521314],[13.824548,100.520919],[13.824506,100.520608],[13.82473,100.52055],[13.824692,100.520125],[13.824162,100.520066],[13.824259,100.519661]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[25],"ring":[[13.82398,100.519542],[13.824331,100.519615],[13.824196,100.520075],[13.824912,100.520141],[13.825039,100.519883],[13.82522,100.519383],[13.825403,100.519374],[13.825475,100.519119],[13.825577,100.518671],[13.825557,100.518602],[13.825987,100.517312],[13.825532,100.516796],[13.825395,100.516926],[13.825249,100.51679],[13.824797,100.517302],[13.82398,100.519542]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[26],"ring":[[13.825594,100.518601],[13.827045,100.520674],[13.828074,100.519671],[13.827552,100.519069],[13.829669,100.517453],[13.829207,100.516938],[13.828817,100.516391],[13.828543,100.515978],[13.827818,100.515871],[13.827579,100.515844],[13.827284,100.515729],[13.826913,100.515357],[13.825253,100.516676],[13.825351,100.516834],[13.825539,100.516681],[13.825592,100.51677],[13.826016,100.517311],[13.825798,100.517953],[13.825594,100.518601]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[27],"ring":[[13.824939,100.520149],[13.824785,100.520223],[13.824797,100.520529],[13.824514,100.520622],[13.824593,100.521152],[13.824651,100.521398],[13.824587,100.521638],[13.824558,100.521713],[13.824517,100.521784],[13.824446,100.521856],[13.824399,100.521914],[13.824298,100.522035],[13.824201,100.522428],[13.824558,100.522572],[13.824507,100.522958],[13.82441,100.523044],[13.824272,100.523077],[13.824057,100.523234],[13.823845,100.523353],[13.825805,100.525542],[13.827311,100.527167],[13.828017,100.526421],[13.828301,100.52594],[13.82866,100.525512],[13.829719,100.524389],[13.829407,100.524088],[13.829106,100.523725],[13.828496,100.522957],[13.827914,100.522109],[13.82561,100.51865],[13.82542,100.519402],[13.825249,100.519397],[13.824939,100.520149]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[28],"ring":[[13.831494,100.521474],[13.830429,100.520429],[13.829722,100.521113],[13.829544,100.521278],[13.829307,100.521417],[13.828799,100.521564],[13.828359,100.521803],[13.827931,100.52207],[13.828446,100.522849],[13.828843,100.523365],[13.829449,100.524103],[13.829765,100.524405],[13.829344,100.524867],[13.829637,100.525114],[13.830004,100.524689],[13.829882,100.524556],[13.829946,100.524503],[13.83048,100.523931],[13.831413,100.522861],[13.831753,100.523209],[13.831921,100.523366],[13.831872,100.523417],[13.832157,100.523702],[13.832731,100.522994],[13.832425,100.522687],[13.832194,100.522424],[13.832181,100.522223],[13.832091,100.522118],[13.831494,100.521474]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[29],"ring":[[13.830646,100.518832],[13.829317,100.519815],[13.828674,100.520491],[13.828155,100.521047],[13.827516,100.521473],[13.827901,100.522062],[13.82878,100.521546],[13.829265,100.52142],[13.829633,100.521182],[13.8304,100.520374],[13.83165,100.521585],[13.83212,100.52208],[13.832212,100.522225],[13.83222,100.522424],[13.832756,100.522983],[13.833562,100.521963],[13.830646,100.518832]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[30],"ring":[[13.827564,100.519077],[13.828101,100.519669],[13.827061,100.520731],[13.827511,100.521445],[13.828143,100.521021],[13.828656,100.520496],[13.828829,100.520307],[13.829012,100.520124],[13.829194,100.519917],[13.829898,100.519372],[13.83064,100.518822],[13.830208,100.518162],[13.829699,100.517446],[13.829061,100.517934],[13.828547,100.518313],[13.827564,100.519077]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[31],"ring":[[13.833766,100.522136],[13.830249,100.526243],[13.830868,100.527],[13.831425,100.527493],[13.831334,100.527629],[13.831437,100.527776],[13.831895,100.527248],[13.832348,100.526712],[13.832454,100.526715],[13.832571,100.526589],[13.83283,100.52627],[13.833265,100.5257],[13.833698,100.525123],[13.834171,100.524589],[13.835126,100.523659],[13.833766,100.522136]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[32],"ring":[[13.835131,100.523671],[13.83416,100.524658],[13.833719,100.525178],[13.833286,100.525739],[13.832882,100.526244],[13.832474,100.526766],[13.832377,100.526747],[13.831924,100.527265],[13.831462,100.527798],[13.832013,100.528449],[13.835618,100.524235],[13.835131,100.523671]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[33],"ring":[[13.832057,100.528455],[13.833346,100.529838],[13.833793,100.529296],[13.834273,100.528846],[13.834747,100.528406],[13.835199,100.527854],[13.837053,100.52587],[13.836388,100.525048],[13.835645,100.524246],[13.833849,100.526378],[13.832982,100.52745],[13.832522,100.528036],[13.832311,100.52828],[13.832196,100.528355],[13.832057,100.528455]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[34],"ring":[[13.832202,100.531024],[13.832381,100.531253],[13.832685,100.531085],[13.832825,100.530801],[13.83307,100.530547],[13.833325,100.529893],[13.832641,100.529137],[13.831813,100.528278],[13.831436,100.527805],[13.831303,100.527642],[13.831399,100.527507],[13.831078,100.527217],[13.830629,100.526764],[13.830239,100.526261],[13.829336,100.527445],[13.829931,100.528464],[13.830436,100.529224],[13.830954,100.529856],[13.831255,100.530106],[13.831551,100.53034],[13.832202,100.531024]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[35],"ring":[[13.83093,100.529853],[13.830371,100.529235],[13.82995,100.52868],[13.829257,100.527498],[13.828856,100.527928],[13.828648,100.528182],[13.828507,100.528415],[13.830343,100.530878],[13.830603,100.530729],[13.830862,100.530555],[13.831398,100.530317],[13.83093,100.529853]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[36],"ring":[[13.831448,100.530322],[13.830872,100.530575],[13.830359,100.530901],[13.830722,100.531804],[13.830883,100.535782],[13.834552,100.533222],[13.832796,100.53112],[13.832366,100.531329],[13.832171,100.531059],[13.831907,100.530825],[13.831448,100.530322]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[37],"ring":[[13.834619,100.533263],[13.830821,100.535922],[13.830769,100.536907],[13.830721,100.537414],[13.830705,100.537648],[13.830727,100.537893],[13.831377,100.537462],[13.831709,100.537955],[13.832956,100.537091],[13.833609,100.536667],[13.834221,100.53618],[13.834621,100.535784],[13.834842,100.535558],[13.835092,100.53541],[13.835632,100.535118],[13.835972,100.535247],[13.836187,100.535077],[13.836402,100.53487],[13.836602,100.534813],[13.836672,100.534722],[13.83692,100.534425],[13.837572,100.533698],[13.836335,100.532391],[13.835087,100.533744],[13.834619,100.533263]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[38],"ring":[[13.839575,100.528818],[13.837068,100.525937],[13.834005,100.529237],[13.834518,100.529885],[13.83494,100.530542],[13.835377,100.530908],[13.833962,100.532466],[13.835067,100.533713],[13.835724,100.532983],[13.836323,100.532374],[13.836213,100.532252],[13.837659,100.530741],[13.838102,100.530271],[13.838604,100.529782],[13.839575,100.528818]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[39],"ring":[[13.834,100.529276],[13.833426,100.529965],[13.833133,100.530502],[13.83277,100.531005],[13.833939,100.532433],[13.835287,100.530917],[13.834867,100.530542],[13.834604,100.530088],[13.834,100.529276]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[40],"ring":[[13.823397,100.537215],[13.823446,100.536874],[13.823174,100.536057],[13.823556,100.535928],[13.82337,100.534886],[13.822741,100.535097],[13.8221,100.535349],[13.82194,100.536868],[13.823397,100.537215]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[41],"ring":[[13.82326,100.536069],[13.823455,100.536882],[13.823417,100.537254],[13.824547,100.537535],[13.824649,100.537135],[13.824689,100.536911],[13.824662,100.536659],[13.824459,100.53575],[13.82326,100.536069]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[42],"ring":[[13.825082,100.535612],[13.824515,100.535755],[13.824709,100.536748],[13.824583,100.537587],[13.825799,100.537804],[13.825825,100.537647],[13.825423,100.536477],[13.825173,100.536556],[13.825082,100.535612]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[43],"ring":[[13.825448,100.536486],[13.825842,100.537634],[13.82581,100.537821],[13.826265,100.537949],[13.825871,100.536347],[13.825448,100.536486]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[44],"ring":[[13.826306,100.537948],[13.832402,100.539363],[13.83278,100.538875],[13.832335,100.537935],[13.832198,100.537655],[13.831708,100.537994],[13.831363,100.537494],[13.830698,100.537877],[13.830366,100.537153],[13.828951,100.537959],[13.828159,100.536084],[13.827987,100.536144],[13.828036,100.536335],[13.827521,100.536559],[13.826207,100.536286],[13.825904,100.536374],[13.826306,100.537948]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[45],"ring":[[13.832229,100.537656],[13.832842,100.538879],[13.832444,100.53937],[13.832925,100.539474],[13.835323,100.537737],[13.836586,100.536864],[13.837616,100.535878],[13.836535,100.534827],[13.835961,100.5353],[13.835735,100.535123],[13.835534,100.535201],[13.834883,100.53557],[13.834289,100.536156],[13.833617,100.536707],[13.832229,100.537656]],"kmlcolor":"red"},{"kh":"วงศ์สว่าง","units":[46],"ring":[[13.836255,100.532234],[13.837621,100.533676],[13.836602,100.534885],[13.837664,100.53588],[13.837873,100.535704],[13.838513,100.535436],[13.839196,100.535051],[13.839973,100.534597],[13.842226,100.533764],[13.843611,100.533406],[13.843221,100.53285],[13.84271,100.532338],[13.841649,100.531083],[13.839625,100.528838],[13.836255,100.532234]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[47],"ring":[[13.836792,100.540409],[13.838826,100.538806],[13.839277,100.538448],[13.839718,100.537978],[13.84069,100.536869],[13.841003,100.537341],[13.842184,100.53545],[13.842069,100.535126],[13.84192,100.534794],[13.841521,100.534351],[13.840336,100.534944],[13.83984,100.535288],[13.839499,100.535667],[13.83867,100.536536],[13.837637,100.537035],[13.836503,100.537571],[13.83546,100.538239],[13.833522,100.539681],[13.836792,100.540409]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[48],"ring":[[13.841003,100.537352],[13.840701,100.536923],[13.839904,100.537804],[13.83942,100.538386],[13.838914,100.538825],[13.836871,100.54037],[13.8392,100.540942],[13.840051,100.539762],[13.839483,100.539013],[13.840006,100.538444],[13.841003,100.537352]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[49],"ring":[[13.839546,100.539067],[13.839837,100.539443],[13.840099,100.539728],[13.839195,100.540965],[13.840806,100.541285],[13.842529,100.539861],[13.842262,100.539561],[13.84198,100.539249],[13.841508,100.538547],[13.841736,100.538247],[13.841,100.53736],[13.839546,100.539067]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[50],"ring":[[13.84257,100.539854],[13.842284,100.540149],[13.842537,100.540393],[13.842734,100.540563],[13.842889,100.540451],[13.84467,100.538692],[13.841999,100.535771],[13.841022,100.53735],[13.841403,100.537821],[13.841594,100.538038],[13.841673,100.538138],[13.841771,100.538241],[13.84154,100.538525],[13.841753,100.538886],[13.842034,100.53926],[13.84257,100.539854]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[51],"ring":[[13.844695,100.538663],[13.845547,100.537805],[13.846088,100.537599],[13.846551,100.537117],[13.846181,100.536327],[13.845643,100.535657],[13.845046,100.534973],[13.843912,100.533618],[13.84154,100.534322],[13.841967,100.534813],[13.842217,100.535454],[13.842036,100.535767],[13.844695,100.538663]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[52],"ring":[[13.84226,100.540158],[13.840821,100.541358],[13.843261,100.541942],[13.845288,100.539941],[13.847061,100.538036],[13.846542,100.537157],[13.846114,100.537593],[13.845576,100.537824],[13.844608,100.538784],[13.842744,100.540616],[13.842556,100.540422],[13.84226,100.540158]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[53],"ring":[[13.845962,100.542576],[13.848186,100.540455],[13.847404,100.538655],[13.847292,100.538333],[13.847103,100.53805],[13.843375,100.541932],[13.845962,100.542576]],"kmlcolor":"green"},{"kh":"วงศ์สว่าง","units":[54],"ring":[[13.848207,100.540542],[13.846122,100.542499],[13.849395,100.543326],[13.84914,100.542618],[13.848842,100.541912],[13.848207,100.540542]],"kmlcolor":"green"}],"votes":[{"แขวง":"บางซื่อ","หน่วย":1,"ชื่อหน่วย":"เต็นท์ลานจอดรถอาคารอเนกประสงค์ ตึกแดง","สาย":"A","n1":2,"n2":13,"n3":3,"n4":77,"n5":138,"valid":233,"novote":16,"bad":28,"turnout":277,"eligible":690,"absent":413},{"แขวง":"บางซื่อ","หน่วย":2,"ชื่อหน่วย":"เต็นท์ลานจอดรถอาคารอเนกประสงค์ ตึกแดง","สาย":"A","n1":2,"n2":18,"n3":8,"n4":92,"n5":128,"valid":248,"novote":18,"bad":19,"turnout":285,"eligible":720,"absent":435},{"แขวง":"บางซื่อ","หน่วย":3,"ชื่อหน่วย":"เต็นท์ลานจอดรถอาคารอเนกประสงค์ ตึกแดง","สาย":"A","n1":2,"n2":8,"n3":7,"n4":70,"n5":122,"valid":209,"novote":13,"bad":32,"turnout":254,"eligible":680,"absent":426},{"แขวง":"บางซื่อ","หน่วย":4,"ชื่อหน่วย":"เต็นท์ลานจอดรถอาคารอเนกประสงค์ ตึกแดง","สาย":"A","n1":1,"n2":11,"n3":4,"n4":20,"n5":158,"valid":194,"novote":13,"bad":26,"turnout":233,"eligible":720,"absent":487},{"แขวง":"บางซื่อ","หน่วย":5,"ชื่อหน่วย":"เต็นท์กองบังคับการตำรวจรถไฟ","สาย":"C","n1":6,"n2":8,"n3":8,"n4":88,"n5":78,"valid":188,"novote":22,"bad":23,"turnout":233,"eligible":630,"absent":397},{"แขวง":"บางซื่อ","หน่วย":6,"ชื่อหน่วย":"เต็นท์กองบังคับการตำรวจรถไฟ","สาย":"C","n1":2,"n2":15,"n3":4,"n4":105,"n5":113,"valid":239,"novote":18,"bad":17,"turnout":274,"eligible":700,"absent":426},{"แขวง":"บางซื่อ","หน่วย":7,"ชื่อหน่วย":"ศูนย์นันทนาการ เตชะวณิช","สาย":"A","n1":0,"n2":12,"n3":10,"n4":57,"n5":61,"valid":140,"novote":18,"bad":5,"turnout":163,"eligible":390,"absent":227},{"แขวง":"บางซื่อ","หน่วย":8,"ชื่อหน่วย":"ศูนย์บริการสาธารณสุข 3 (บางซื่อ)","สาย":"A","n1":2,"n2":2,"n3":3,"n4":60,"n5":226,"valid":293,"novote":11,"bad":20,"turnout":324,"eligible":810,"absent":486},{"แขวง":"บางซื่อ","หน่วย":9,"ชื่อหน่วย":"ศูนย์บริการสาธารณสุข 3 (บางซื่อ)","สาย":"A","n1":2,"n2":16,"n3":15,"n4":111,"n5":162,"valid":306,"novote":19,"bad":23,"turnout":348,"eligible":720,"absent":372},{"แขวง":"บางซื่อ","หน่วย":10,"ชื่อหน่วย":"ศูนย์บริการสาธารณสุข 3 (บางซื่อ)","สาย":"A","n1":2,"n2":7,"n3":20,"n4":100,"n5":112,"valid":241,"novote":25,"bad":11,"turnout":277,"eligible":600,"absent":323},{"แขวง":"บางซื่อ","หน่วย":11,"ชื่อหน่วย":"ศูนย์บริการสาธารณสุข 3 (บางซื่อ)","สาย":"A","n1":1,"n2":4,"n3":1,"n4":29,"n5":58,"valid":93,"novote":10,"bad":14,"turnout":117,"eligible":600,"absent":483},{"แขวง":"บางซื่อ","หน่วย":12,"ชื่อหน่วย":"เต็นท์ข้างโลตัส สาขาประชาชื่น","สาย":"A","n1":6,"n2":20,"n3":46,"n4":154,"n5":86,"valid":312,"novote":28,"bad":24,"turnout":364,"eligible":660,"absent":296},{"แขวง":"บางซื่อ","หน่วย":13,"ชื่อหน่วย":"เต็นท์ข้างโลตัส สาขาประชาชื่น","สาย":"A","n1":6,"n2":19,"n3":18,"n4":151,"n5":114,"valid":308,"novote":21,"bad":28,"turnout":357,"eligible":670,"absent":313},{"แขวง":"บางซื่อ","หน่วย":14,"ชื่อหน่วย":"เต็นท์พุทธสมาคม","สาย":"A","n1":7,"n2":18,"n3":39,"n4":147,"n5":106,"valid":317,"novote":33,"bad":9,"turnout":359,"eligible":610,"absent":251},{"แขวง":"บางซื่อ","หน่วย":15,"ชื่อหน่วย":"เต็นท์พุทธสมาคม","สาย":"A","n1":4,"n2":26,"n3":33,"n4":138,"n5":94,"valid":295,"novote":28,"bad":28,"turnout":351,"eligible":630,"absent":279},{"แขวง":"บางซื่อ","หน่วย":16,"ชื่อหน่วย":"โรงเรียนราชนันทาจารย์ (สามเสนวิทยาลัย 2)","สาย":"A","n1":6,"n2":18,"n3":39,"n4":219,"n5":142,"valid":424,"novote":25,"bad":19,"turnout":468,"eligible":870,"absent":402},{"แขวง":"บางซื่อ","หน่วย":17,"ชื่อหน่วย":"โรงเรียนราชนันทาจารย์ (สามเสนวิทยาลัย 2)","สาย":"A","n1":4,"n2":32,"n3":26,"n4":220,"n5":144,"valid":426,"novote":41,"bad":26,"turnout":493,"eligible":870,"absent":377},{"แขวง":"บางซื่อ","หน่วย":18,"ชื่อหน่วย":"โรงเรียนราชนันทาจารย์ (สามเสนวิทยาลัย 2)","สาย":"A","n1":8,"n2":27,"n3":36,"n4":190,"n5":152,"valid":413,"novote":44,"bad":18,"turnout":475,"eligible":790,"absent":315},{"แขวง":"บางซื่อ","หน่วย":19,"ชื่อหน่วย":"วิทยาลัยเทคโนโลยีวิมลบริหารธุรกิจ","สาย":"A","n1":3,"n2":32,"n3":18,"n4":152,"n5":115,"valid":320,"novote":35,"bad":28,"turnout":383,"eligible":790,"absent":407},{"แขวง":"บางซื่อ","หน่วย":20,"ชื่อหน่วย":"วิทยาลัยเทคโนโลยีวิมลบริหารธุรกิจ","สาย":"A","n1":1,"n2":32,"n3":56,"n4":275,"n5":43,"valid":407,"novote":38,"bad":21,"turnout":466,"eligible":770,"absent":304},{"แขวง":"บางซื่อ","หน่วย":21,"ชื่อหน่วย":"วิทยาลัยเทคโนโลยีวิมลบริหารธุรกิจ","สาย":"A","n1":3,"n2":26,"n3":35,"n4":185,"n5":53,"valid":302,"novote":32,"bad":13,"turnout":347,"eligible":580,"absent":233},{"แขวง":"บางซื่อ","หน่วย":22,"ชื่อหน่วย":"วิทยาลัยเทคโนโลยีวิมลบริหารธุรกิจ","สาย":"A","n1":0,"n2":24,"n3":32,"n4":165,"n5":98,"valid":319,"novote":26,"bad":22,"turnout":367,"eligible":670,"absent":303},{"แขวง":"บางซื่อ","หน่วย":23,"ชื่อหน่วย":"เต็นท์กองระบบส่งน้ำดิบ","สาย":"B","n1":1,"n2":15,"n3":22,"n4":99,"n5":85,"valid":222,"novote":19,"bad":20,"turnout":261,"eligible":610,"absent":349},{"แขวง":"บางซื่อ","หน่วย":24,"ชื่อหน่วย":"เต็นท์กองระบบส่งน้ำดิบ","สาย":"B","n1":4,"n2":6,"n3":19,"n4":73,"n5":81,"valid":183,"novote":18,"bad":19,"turnout":220,"eligible":530,"absent":310},{"แขวง":"บางซื่อ","หน่วย":25,"ชื่อหน่วย":"เต็นท์ใต้สะพานสูง ตรงข้ามศูนย์นันทนาการเตชะวณิช","สาย":"B","n1":8,"n2":24,"n3":17,"n4":173,"n5":112,"valid":334,"novote":26,"bad":42,"turnout":402,"eligible":880,"absent":478},{"แขวง":"บางซื่อ","หน่วย":26,"ชื่อหน่วย":"เต็นท์ใต้สะพานสูง ตรงข้ามศูนย์นันทนาการเตชะวณิช","สาย":"B","n1":8,"n2":18,"n3":27,"n4":139,"n5":105,"valid":297,"novote":22,"bad":26,"turnout":345,"eligible":850,"absent":505},{"แขวง":"บางซื่อ","หน่วย":27,"ชื่อหน่วย":"เต็นท์ใต้สะพานสูง ตรงข้ามศูนย์นันทนาการเตชะวณิช","สาย":"B","n1":1,"n2":9,"n3":16,"n4":129,"n5":107,"valid":262,"novote":15,"bad":19,"turnout":296,"eligible":820,"absent":524},{"แขวง":"บางซื่อ","หน่วย":28,"ชื่อหน่วย":"เต็นท์ใต้สะพานสูง ตรงข้ามศูนย์นันทนาการเตชะวณิช","สาย":"B","n1":2,"n2":16,"n3":11,"n4":138,"n5":111,"valid":278,"novote":15,"bad":15,"turnout":308,"eligible":870,"absent":562},{"แขวง":"บางซื่อ","หน่วย":29,"ชื่อหน่วย":"เต็นท์ข้างโลตัส สาขาประชาชื่น","สาย":"A","n1":6,"n2":34,"n3":32,"n4":211,"n5":87,"valid":370,"novote":45,"bad":57,"turnout":472,"eligible":850,"absent":378},{"แขวง":"บางซื่อ","หน่วย":30,"ชื่อหน่วย":"เต็นท์ข้างโลตัส สาขาประชาชื่น","สาย":"A","n1":4,"n2":26,"n3":33,"n4":162,"n5":62,"valid":287,"novote":28,"bad":21,"turnout":336,"eligible":620,"absent":284},{"แขวง":"บางซื่อ","หน่วย":31,"ชื่อหน่วย":"เต็นท์ข้างอาคารสุขประพฤติ","สาย":"C","n1":5,"n2":33,"n3":35,"n4":207,"n5":103,"valid":383,"novote":57,"bad":35,"turnout":475,"eligible":780,"absent":305},{"แขวง":"บางซื่อ","หน่วย":32,"ชื่อหน่วย":"เต็นท์โรงเรียนศีลาจารพิพัฒน์","สาย":"F","n1":1,"n2":16,"n3":22,"n4":146,"n5":66,"valid":251,"novote":27,"bad":16,"turnout":294,"eligible":540,"absent":246},{"แขวง":"บางซื่อ","หน่วย":33,"ชื่อหน่วย":"เต็นท์โรงเรียนศีลาจารพิพัฒน์","สาย":"F","n1":6,"n2":19,"n3":26,"n4":143,"n5":51,"valid":245,"novote":22,"bad":7,"turnout":274,"eligible":490,"absent":216},{"แขวง":"บางซื่อ","หน่วย":34,"ชื่อหน่วย":"เต็นท์ไปรษณีย์ไทย สาขาบางซื่อ","สาย":"F","n1":2,"n2":11,"n3":22,"n4":70,"n5":47,"valid":152,"novote":21,"bad":15,"turnout":188,"eligible":390,"absent":202},{"แขวง":"บางซื่อ","หน่วย":35,"ชื่อหน่วย":"เต็นท์ชุมสายโทรศัพท์ ซอยกรุงเทพ-นนทบุรี 18","สาย":"F","n1":3,"n2":25,"n3":11,"n4":222,"n5":67,"valid":328,"novote":31,"bad":25,"turnout":384,"eligible":650,"absent":266},{"แขวง":"บางซื่อ","หน่วย":36,"ชื่อหน่วย":"โชว์รูมรถฮอนด้า ถนนกรุงเทพ-นนทบุรี 2","สาย":"F","n1":3,"n2":38,"n3":25,"n4":194,"n5":89,"valid":349,"novote":30,"bad":21,"turnout":400,"eligible":640,"absent":240},{"แขวง":"บางซื่อ","หน่วย":37,"ชื่อหน่วย":"โชว์รูมรถฮอนด้า ถนนกรุงเทพ-นนทบุรี 2","สาย":"F","n1":2,"n2":19,"n3":21,"n4":98,"n5":71,"valid":211,"novote":14,"bad":13,"turnout":238,"eligible":520,"absent":282},{"แขวง":"บางซื่อ","หน่วย":38,"ชื่อหน่วย":"เต็นท์ใต้สถานีรถไฟฟ้าสายสีม่วง สถานีเตาปูน","สาย":"B","n1":6,"n2":8,"n3":4,"n4":103,"n5":158,"valid":279,"novote":18,"bad":21,"turnout":318,"eligible":820,"absent":502},{"แขวง":"บางซื่อ","หน่วย":39,"ชื่อหน่วย":"เต็นท์ใต้สถานีรถไฟฟ้าสายสีม่วง สถานีเตาปูน","สาย":"B","n1":5,"n2":31,"n3":33,"n4":188,"n5":142,"valid":399,"novote":34,"bad":25,"turnout":458,"eligible":850,"absent":392},{"แขวง":"บางซื่อ","หน่วย":40,"ชื่อหน่วย":"เต็นท์ใต้สถานีรถไฟฟ้าสายสีม่วง สถานีเตาปูน","สาย":"B","n1":2,"n2":36,"n3":42,"n4":278,"n5":57,"valid":415,"novote":57,"bad":27,"turnout":499,"eligible":860,"absent":361},{"แขวง":"บางซื่อ","หน่วย":41,"ชื่อหน่วย":"เต็นท์ใต้สถานีรถไฟฟ้าสายสีม่วง สถานีเตาปูน","สาย":"B","n1":1,"n2":24,"n3":38,"n4":214,"n5":56,"valid":333,"novote":43,"bad":19,"turnout":395,"eligible":620,"absent":225},{"แขวง":"บางซื่อ","หน่วย":42,"ชื่อหน่วย":"เต็นท์ใต้สถานีรถไฟฟ้าสายสีม่วง สถานีเตาปูน","สาย":"B","n1":7,"n2":26,"n3":39,"n4":280,"n5":63,"valid":415,"novote":59,"bad":23,"turnout":497,"eligible":820,"absent":323},{"แขวง":"บางซื่อ","หน่วย":43,"ชื่อหน่วย":"เต็นท์ใต้สถานีรถไฟฟ้าสายสีม่วง สถานีเตาปูน","สาย":"B","n1":3,"n2":13,"n3":40,"n4":185,"n5":149,"valid":390,"novote":29,"bad":33,"turnout":452,"eligible":860,"absent":408},{"แขวง":"บางซื่อ","หน่วย":44,"ชื่อหน่วย":"เต็นท์ใต้สถานีรถไฟฟ้าสายสีม่วง สถานีเตาปูน","สาย":"B","n1":5,"n2":23,"n3":35,"n4":192,"n5":76,"valid":331,"novote":31,"bad":15,"turnout":377,"eligible":680,"absent":303},{"แขวง":"บางซื่อ","หน่วย":45,"ชื่อหน่วย":"เต็นท์โรงเรียนเทพสัมฤทธิ์วิทยา","สาย":"B","n1":5,"n2":10,"n3":22,"n4":135,"n5":218,"valid":390,"novote":27,"bad":22,"turnout":439,"eligible":880,"absent":441},{"แขวง":"บางซื่อ","หน่วย":46,"ชื่อหน่วย":"เต็นท์โรงเรียนเทพสัมฤทธิ์วิทยา","สาย":"B","n1":5,"n2":31,"n3":27,"n4":173,"n5":158,"valid":394,"novote":30,"bad":21,"turnout":445,"eligible":870,"absent":425},{"แขวง":"บางซื่อ","หน่วย":47,"ชื่อหน่วย":"เต็นท์ที่จอดรถธนาคารไทยพาณิชย์ สาขาบางโพ","สาย":"B","n1":5,"n2":27,"n3":24,"n4":99,"n5":73,"valid":228,"novote":32,"bad":11,"turnout":271,"eligible":580,"absent":309},{"แขวง":"บางซื่อ","หน่วย":48,"ชื่อหน่วย":"เต็นท์ที่จอดรถธนาคารไทยพาณิชย์ สาขาบางโพ","สาย":"B","n1":2,"n2":13,"n3":5,"n4":59,"n5":89,"valid":168,"novote":6,"bad":20,"turnout":194,"eligible":520,"absent":326},{"แขวง":"บางซื่อ","หน่วย":49,"ชื่อหน่วย":"เต็นท์หน้าองค์การอุตสาหกรรมป่าไม้ ประชาราษฎร์ 1","สาย":"B","n1":3,"n2":19,"n3":50,"n4":182,"n5":154,"valid":408,"novote":36,"bad":34,"turnout":478,"eligible":850,"absent":372},{"แขวง":"บางซื่อ","หน่วย":50,"ชื่อหน่วย":"เต็นท์หน้าองค์การอุตสาหกรรมป่าไม้ ประชาราษฎร์ 1","สาย":"B","n1":6,"n2":21,"n3":55,"n4":193,"n5":87,"valid":362,"novote":41,"bad":35,"turnout":438,"eligible":870,"absent":432},{"แขวง":"บางซื่อ","หน่วย":51,"ชื่อหน่วย":"เต็นท์ในซอยอาทรอุปถัมภ์","สาย":"B","n1":8,"n2":15,"n3":16,"n4":156,"n5":125,"valid":320,"novote":29,"bad":21,"turnout":370,"eligible":670,"absent":300},{"แขวง":"บางซื่อ","หน่วย":52,"ชื่อหน่วย":"เต็นท์ในซอยอาทรอุปถัมภ์","สาย":"B","n1":4,"n2":20,"n3":29,"n4":159,"n5":111,"valid":323,"novote":27,"bad":24,"turnout":374,"eligible":640,"absent":266},{"แขวง":"บางซื่อ","หน่วย":53,"ชื่อหน่วย":"เต็นท์ในซอยอาทรอุปถัมภ์","สาย":"B","n1":2,"n2":8,"n3":26,"n4":146,"n5":157,"valid":339,"novote":17,"bad":24,"turnout":380,"eligible":740,"absent":360},{"แขวง":"บางซื่อ","หน่วย":54,"ชื่อหน่วย":"โรงเรียนวัดประดู่ธรรมาธิปัตย์","สาย":"B","n1":10,"n2":20,"n3":24,"n4":132,"n5":108,"valid":294,"novote":18,"bad":31,"turnout":343,"eligible":730,"absent":387},{"แขวง":"บางซื่อ","หน่วย":55,"ชื่อหน่วย":"โรงเรียนวัดประดู่ธรรมาธิปัตย์","สาย":"B","n1":2,"n2":23,"n3":35,"n4":135,"n5":124,"valid":319,"novote":13,"bad":9,"turnout":341,"eligible":710,"absent":369},{"แขวง":"บางซื่อ","หน่วย":56,"ชื่อหน่วย":"เต็นท์วัดประดู่ธรรมาธิปัตย์","สาย":"B","n1":2,"n2":19,"n3":30,"n4":126,"n5":104,"valid":281,"novote":24,"bad":35,"turnout":340,"eligible":700,"absent":360},{"แขวง":"บางซื่อ","หน่วย":57,"ชื่อหน่วย":"เต็นท์ซอยบริษัทมาเวลล์","สาย":"B","n1":4,"n2":17,"n3":37,"n4":165,"n5":76,"valid":299,"novote":44,"bad":33,"turnout":376,"eligible":790,"absent":414},{"แขวง":"บางซื่อ","หน่วย":58,"ชื่อหน่วย":"เต็นท์ซอยบริษัทมาเวลล์","สาย":"B","n1":9,"n2":21,"n3":45,"n4":157,"n5":84,"valid":316,"novote":29,"bad":13,"turnout":358,"eligible":680,"absent":322},{"แขวง":"บางซื่อ","หน่วย":59,"ชื่อหน่วย":"เต็นท์ที่จอดรถศาลเจ้าแม่ทับทิม (ซอยประชานฤมิตร)","สาย":"F","n1":4,"n2":21,"n3":16,"n4":149,"n5":131,"valid":321,"novote":12,"bad":30,"turnout":363,"eligible":810,"absent":447},{"แขวง":"บางซื่อ","หน่วย":60,"ชื่อหน่วย":"เต็นท์ที่จอดรถศาลเจ้าแม่ทับทิม (ซอยประชานฤมิตร)","สาย":"F","n1":6,"n2":8,"n3":16,"n4":148,"n5":168,"valid":346,"novote":22,"bad":27,"turnout":395,"eligible":840,"absent":445},{"แขวง":"บางซื่อ","หน่วย":61,"ชื่อหน่วย":"เต็นท์ที่จอดรถศาลเจ้าแม่ทับทิม (ซอยประชานฤมิตร)","สาย":"F","n1":5,"n2":34,"n3":22,"n4":151,"n5":106,"valid":318,"novote":19,"bad":28,"turnout":365,"eligible":820,"absent":455},{"แขวง":"บางซื่อ","หน่วย":62,"ชื่อหน่วย":"โรงเรียนวัดบางโพโอมาวาส","สาย":"F","n1":4,"n2":14,"n3":16,"n4":115,"n5":77,"valid":226,"novote":13,"bad":17,"turnout":256,"eligible":550,"absent":294},{"แขวง":"บางซื่อ","หน่วย":63,"ชื่อหน่วย":"โรงเรียนวัดบางโพโอมาวาส","สาย":"F","n1":2,"n2":8,"n3":8,"n4":108,"n5":73,"valid":199,"novote":13,"bad":29,"turnout":241,"eligible":480,"absent":239},{"แขวง":"บางซื่อ","หน่วย":64,"ชื่อหน่วย":"เต็นท์โรงเรียนกุลวรรณศึกษา","สาย":"F","n1":5,"n2":14,"n3":9,"n4":203,"n5":65,"valid":296,"novote":32,"bad":18,"turnout":346,"eligible":620,"absent":274},{"แขวง":"บางซื่อ","หน่วย":65,"ชื่อหน่วย":"เต็นท์โรงเรียนกุลวรรณศึกษา","สาย":"F","n1":7,"n2":22,"n3":25,"n4":213,"n5":79,"valid":346,"novote":24,"bad":33,"turnout":403,"eligible":850,"absent":447},{"แขวง":"บางซื่อ","หน่วย":66,"ชื่อหน่วย":"เต็นท์โรงเรียนกุลวรรณศึกษา","สาย":"F","n1":3,"n2":15,"n3":12,"n4":177,"n5":183,"valid":390,"novote":35,"bad":24,"turnout":449,"eligible":830,"absent":381},{"แขวง":"บางซื่อ","หน่วย":67,"ชื่อหน่วย":"เต็นท์โรงเรียนกุลวรรณศึกษา","สาย":"F","n1":3,"n2":37,"n3":38,"n4":207,"n5":66,"valid":351,"novote":31,"bad":23,"turnout":405,"eligible":800,"absent":395},{"แขวง":"บางซื่อ","หน่วย":68,"ชื่อหน่วย":"เต็นท์สถานีตำรวจนครบาลเตาปูน","สาย":"F","n1":1,"n2":10,"n3":17,"n4":159,"n5":135,"valid":322,"novote":23,"bad":19,"turnout":364,"eligible":710,"absent":346},{"แขวง":"บางซื่อ","หน่วย":69,"ชื่อหน่วย":"เต็นท์สถานีตำรวจนครบาลเตาปูน","สาย":"F","n1":5,"n2":24,"n3":25,"n4":136,"n5":130,"valid":320,"novote":30,"bad":40,"turnout":390,"eligible":740,"absent":350},{"แขวง":"บางซื่อ","หน่วย":70,"ชื่อหน่วย":"โรงเรียนวัดเวตวันธรรมาวาส","สาย":"F","n1":5,"n2":19,"n3":29,"n4":153,"n5":136,"valid":342,"novote":31,"bad":41,"turnout":414,"eligible":800,"absent":386},{"แขวง":"บางซื่อ","หน่วย":71,"ชื่อหน่วย":"โรงเรียนวัดเวตวันธรรมาวาส","สาย":"F","n1":5,"n2":16,"n3":11,"n4":116,"n5":131,"valid":279,"novote":22,"bad":37,"turnout":338,"eligible":790,"absent":452},{"แขวง":"บางซื่อ","หน่วย":72,"ชื่อหน่วย":"เต็นท์ลานจอดรถ อาคารชุดรีเจ้นท์โฮม บางซ่อน","สาย":"F","n1":8,"n2":48,"n3":28,"n4":147,"n5":90,"valid":321,"novote":27,"bad":36,"turnout":384,"eligible":760,"absent":376},{"แขวง":"บางซื่อ","หน่วย":73,"ชื่อหน่วย":"เต็นท์ลานจอดรถ อาคารชุดรีเจ้นท์โฮม บางซ่อน","สาย":"F","n1":4,"n2":30,"n3":43,"n4":274,"n5":68,"valid":419,"novote":65,"bad":26,"turnout":510,"eligible":823,"absent":313},{"แขวง":"บางซื่อ","หน่วย":74,"ชื่อหน่วย":"เต็นท์ลานจอดรถ อาคารชุดรีเจ้นท์โฮม บางซ่อน","สาย":"F","n1":8,"n2":28,"n3":25,"n4":219,"n5":66,"valid":346,"novote":71,"bad":52,"turnout":469,"eligible":760,"absent":291},{"แขวง":"บางซื่อ","หน่วย":75,"ชื่อหน่วย":"เต็นท์ลานจอดรถ อาคารชุดรีเจ้นท์โฮม บางซ่อน","สาย":"F","n1":2,"n2":23,"n3":16,"n4":181,"n5":39,"valid":261,"novote":31,"bad":19,"turnout":311,"eligible":560,"absent":249},{"แขวง":"บางซื่อ","หน่วย":76,"ชื่อหน่วย":"เต็นท์ลานจอดรถ อาคารชุดรีเจ้นท์โฮม บางซ่อน","สาย":"F","n1":6,"n2":31,"n3":42,"n4":242,"n5":68,"valid":389,"novote":64,"bad":31,"turnout":484,"eligible":830,"absent":346},{"แขวง":"บางซื่อ","หน่วย":77,"ชื่อหน่วย":"เต็นท์ตลาดบางซ่อน","สาย":"E","n1":3,"n2":34,"n3":7,"n4":115,"n5":108,"valid":267,"novote":24,"bad":20,"turnout":311,"eligible":720,"absent":409},{"แขวง":"บางซื่อ","หน่วย":78,"ชื่อหน่วย":"เต็นท์ตลาดบางซ่อน","สาย":"E","n1":7,"n2":24,"n3":11,"n4":133,"n5":119,"valid":294,"novote":20,"bad":33,"turnout":347,"eligible":760,"absent":413},{"แขวง":"บางซื่อ","หน่วย":79,"ชื่อหน่วย":"เต็นท์ตลาดบางซ่อน","สาย":"E","n1":7,"n2":24,"n3":15,"n4":123,"n5":110,"valid":279,"novote":23,"bad":34,"turnout":336,"eligible":690,"absent":354},{"แขวง":"บางซื่อ","หน่วย":80,"ชื่อหน่วย":"เต็นท์ลานจอดรถเซเว่นอีเลฟเว่น สาขาซอยสีน้ำเงิน","สาย":"E","n1":4,"n2":12,"n3":8,"n4":101,"n5":182,"valid":307,"novote":23,"bad":23,"turnout":353,"eligible":750,"absent":397},{"แขวง":"บางซื่อ","หน่วย":81,"ชื่อหน่วย":"เต็นท์ลานจอดรถเซเว่นอีเลฟเว่น สาขาซอยสีน้ำเงิน","สาย":"E","n1":6,"n2":20,"n3":7,"n4":105,"n5":88,"valid":226,"novote":26,"bad":27,"turnout":279,"eligible":650,"absent":371},{"แขวง":"บางซื่อ","หน่วย":82,"ชื่อหน่วย":"เต็นท์ลานจอดรถเซเว่นอีเลฟเว่น สาขาซอยสีน้ำเงิน","สาย":"E","n1":4,"n2":18,"n3":13,"n4":115,"n5":70,"valid":220,"novote":24,"bad":36,"turnout":280,"eligible":620,"absent":340},{"แขวง":"บางซื่อ","หน่วย":83,"ชื่อหน่วย":"เต็นท์ลานจอดรถเซเว่นอีเลฟเว่น สาขาซอยสีน้ำเงิน","สาย":"E","n1":5,"n2":18,"n3":18,"n4":119,"n5":156,"valid":316,"novote":22,"bad":27,"turnout":365,"eligible":700,"absent":335},{"แขวง":"บางซื่อ","หน่วย":84,"ชื่อหน่วย":"เต็นท์พิบูลย์คอนโดทาวน์","สาย":"E","n1":3,"n2":32,"n3":33,"n4":182,"n5":99,"valid":349,"novote":34,"bad":35,"turnout":418,"eligible":840,"absent":422},{"แขวง":"บางซื่อ","หน่วย":85,"ชื่อหน่วย":"เต็นท์พิบูลย์คอนโดทาวน์","สาย":"E","n1":5,"n2":22,"n3":21,"n4":114,"n5":124,"valid":286,"novote":23,"bad":22,"turnout":331,"eligible":820,"absent":489},{"แขวง":"บางซื่อ","หน่วย":86,"ชื่อหน่วย":"เต็นท์พิบูลย์คอนโดทาวน์","สาย":"E","n1":2,"n2":19,"n3":25,"n4":166,"n5":182,"valid":394,"novote":16,"bad":23,"turnout":433,"eligible":820,"absent":387},{"แขวง":"บางซื่อ","หน่วย":87,"ชื่อหน่วย":"โรงเรียนวัดสร้อยทอง","สาย":"E","n1":5,"n2":19,"n3":25,"n4":134,"n5":63,"valid":246,"novote":26,"bad":20,"turnout":292,"eligible":620,"absent":328},{"แขวง":"บางซื่อ","หน่วย":88,"ชื่อหน่วย":"โรงเรียนวัดสร้อยทอง","สาย":"E","n1":3,"n2":20,"n3":15,"n4":114,"n5":32,"valid":184,"novote":36,"bad":35,"turnout":255,"eligible":600,"absent":345},{"แขวง":"บางซื่อ","หน่วย":89,"ชื่อหน่วย":"โรงเรียนวัดสร้อยทอง","สาย":"E","n1":8,"n2":16,"n3":9,"n4":102,"n5":105,"valid":240,"novote":25,"bad":19,"turnout":284,"eligible":630,"absent":346},{"แขวง":"วงศ์สว่าง","หน่วย":1,"ชื่อหน่วย":"เต็นท์ชุมทางสยามยิปซี (บางซ่อน)","สาย":"E","n1":7,"n2":29,"n3":56,"n4":160,"n5":95,"valid":347,"novote":33,"bad":26,"turnout":406,"eligible":650,"absent":244},{"แขวง":"วงศ์สว่าง","หน่วย":2,"ชื่อหน่วย":"เต็นท์ปากซอยกรุงเทพ-นนทบุรี 40","สาย":"E","n1":2,"n2":15,"n3":29,"n4":67,"n5":64,"valid":177,"novote":18,"bad":12,"turnout":207,"eligible":330,"absent":123},{"แขวง":"วงศ์สว่าง","หน่วย":3,"ชื่อหน่วย":"โชว์รูมรถนิสสัน ซอยกรุงเทพ-นนทบุรี 42","สาย":"E","n1":3,"n2":25,"n3":19,"n4":64,"n5":46,"valid":157,"novote":12,"bad":26,"turnout":195,"eligible":320,"absent":125},{"แขวง":"วงศ์สว่าง","หน่วย":4,"ชื่อหน่วย":"เต็นท์ลานจอดรถร้านอาหารบาร์บีคิวรีสอร์ท","สาย":"E","n1":4,"n2":30,"n3":29,"n4":162,"n5":88,"valid":313,"novote":30,"bad":19,"turnout":362,"eligible":640,"absent":278},{"แขวง":"วงศ์สว่าง","หน่วย":5,"ชื่อหน่วย":"เต็นท์ปั้มน้ำมันปตท. ปากซอยกรุงเทพ-นนทบุรี 37","สาย":"E","n1":5,"n2":23,"n3":49,"n4":173,"n5":70,"valid":320,"novote":41,"bad":32,"turnout":393,"eligible":680,"absent":287},{"แขวง":"วงศ์สว่าง","หน่วย":6,"ชื่อหน่วย":"เต็นท์ในซอยสุดซอยสมถวิล","สาย":"E","n1":2,"n2":30,"n3":27,"n4":138,"n5":118,"valid":315,"novote":21,"bad":23,"turnout":359,"eligible":720,"absent":361},{"แขวง":"วงศ์สว่าง","หน่วย":7,"ชื่อหน่วย":"เต็นท์กรมยุทธบริการทหาร","สาย":"E","n1":6,"n2":26,"n3":60,"n4":161,"n5":73,"valid":326,"novote":32,"bad":27,"turnout":385,"eligible":710,"absent":325},{"แขวง":"วงศ์สว่าง","หน่วย":8,"ชื่อหน่วย":"เต็นท์กรมยุทธบริการทหาร","สาย":"E","n1":4,"n2":32,"n3":29,"n4":164,"n5":95,"valid":324,"novote":38,"bad":36,"turnout":398,"eligible":660,"absent":262},{"แขวง":"วงศ์สว่าง","หน่วย":9,"ชื่อหน่วย":"เต็นท์กรมยุทธบริการทหาร","สาย":"E","n1":8,"n2":26,"n3":34,"n4":100,"n5":122,"valid":290,"novote":46,"bad":38,"turnout":374,"eligible":620,"absent":246},{"แขวง":"วงศ์สว่าง","หน่วย":10,"ชื่อหน่วย":"เต็นท์หน้าบิ๊กซี สาขาวงศ์สว่าง","สาย":"D","n1":0,"n2":18,"n3":30,"n4":159,"n5":34,"valid":241,"novote":33,"bad":9,"turnout":283,"eligible":500,"absent":217},{"แขวง":"วงศ์สว่าง","หน่วย":11,"ชื่อหน่วย":"เต็นท์หน้าบิ๊กซี สาขาวงศ์สว่าง","สาย":"D","n1":0,"n2":33,"n3":31,"n4":282,"n5":18,"valid":364,"novote":38,"bad":22,"turnout":424,"eligible":660,"absent":236},{"แขวง":"วงศ์สว่าง","หน่วย":12,"ชื่อหน่วย":"เต็นท์หน้าบิ๊กซี สาขาวงศ์สว่าง","สาย":"D","n1":1,"n2":22,"n3":37,"n4":262,"n5":40,"valid":362,"novote":34,"bad":24,"turnout":420,"eligible":730,"absent":310},{"แขวง":"วงศ์สว่าง","หน่วย":13,"ชื่อหน่วย":"เต็นท์ลานอเนกประสงค์ ชุมชนปานทิพย์ 1","สาย":"C","n1":3,"n2":9,"n3":23,"n4":62,"n5":79,"valid":176,"novote":18,"bad":16,"turnout":210,"eligible":400,"absent":190},{"แขวง":"วงศ์สว่าง","หน่วย":14,"ชื่อหน่วย":"ลานกีฬาชุมชนยิ้มประยูรพัฒนา","สาย":"C","n1":1,"n2":20,"n3":13,"n4":96,"n5":143,"valid":273,"novote":16,"bad":17,"turnout":306,"eligible":560,"absent":254},{"แขวง":"วงศ์สว่าง","หน่วย":15,"ชื่อหน่วย":"โรงเรียนวัดประชาศรัทธาธรรม","สาย":"D","n1":3,"n2":17,"n3":20,"n4":121,"n5":138,"valid":299,"novote":20,"bad":23,"turnout":342,"eligible":760,"absent":418},{"แขวง":"วงศ์สว่าง","หน่วย":16,"ชื่อหน่วย":"โรงเรียนวัดประชาศรัทธาธรรม","สาย":"D","n1":2,"n2":21,"n3":17,"n4":131,"n5":116,"valid":287,"novote":28,"bad":23,"turnout":338,"eligible":780,"absent":442},{"แขวง":"วงศ์สว่าง","หน่วย":17,"ชื่อหน่วย":"โรงเรียนวัดประชาศรัทธาธรรม","สาย":"D","n1":2,"n2":12,"n3":15,"n4":126,"n5":111,"valid":266,"novote":32,"bad":28,"turnout":326,"eligible":820,"absent":494},{"แขวง":"วงศ์สว่าง","หน่วย":18,"ชื่อหน่วย":"เต็นท์ในมหาวิทยาลัยเทคโนโลยีราชมงคลพระนครเหนือ","สาย":"D","n1":7,"n2":23,"n3":20,"n4":115,"n5":89,"valid":254,"novote":22,"bad":18,"turnout":294,"eligible":620,"absent":326},{"แขวง":"วงศ์สว่าง","หน่วย":19,"ชื่อหน่วย":"เต็นท์ในหมู่บ้านพิบูลย์","สาย":"D","n1":5,"n2":9,"n3":49,"n4":152,"n5":81,"valid":296,"novote":19,"bad":19,"turnout":334,"eligible":560,"absent":226},{"แขวง":"วงศ์สว่าง","หน่วย":20,"ชื่อหน่วย":"เต็นท์ในหมู่บ้านพิบูลย์","สาย":"D","n1":9,"n2":36,"n3":27,"n4":164,"n5":76,"valid":312,"novote":27,"bad":21,"turnout":360,"eligible":570,"absent":210},{"แขวง":"วงศ์สว่าง","หน่วย":21,"ชื่อหน่วย":"เต็นท์โรงเรียนวัดมัชฌันติการาม","สาย":"D","n1":9,"n2":10,"n3":22,"n4":172,"n5":100,"valid":313,"novote":30,"bad":44,"turnout":387,"eligible":780,"absent":393},{"แขวง":"วงศ์สว่าง","หน่วย":22,"ชื่อหน่วย":"เต็นท์โรงเรียนวัดมัชฌันติการาม","สาย":"D","n1":7,"n2":13,"n3":40,"n4":189,"n5":147,"valid":396,"novote":30,"bad":22,"turnout":448,"eligible":810,"absent":362},{"แขวง":"วงศ์สว่าง","หน่วย":23,"ชื่อหน่วย":"เต็นท์ลานจอดรถ ธนาคารกรุงไทย สาขาวงศ์สว่าง","สาย":"D","n1":5,"n2":16,"n3":24,"n4":96,"n5":99,"valid":240,"novote":26,"bad":10,"turnout":276,"eligible":510,"absent":234},{"แขวง":"วงศ์สว่าง","หน่วย":24,"ชื่อหน่วย":"เต็นท์ลานกีฬา ซอยวงศ์สว่าง 19","สาย":"D","n1":4,"n2":26,"n3":15,"n4":212,"n5":117,"valid":374,"novote":35,"bad":53,"turnout":462,"eligible":870,"absent":408},{"แขวง":"วงศ์สว่าง","หน่วย":25,"ชื่อหน่วย":"เต็นท์ลานกีฬา ซอยวงศ์สว่าง 19","สาย":"D","n1":4,"n2":17,"n3":43,"n4":161,"n5":143,"valid":368,"novote":32,"bad":28,"turnout":428,"eligible":840,"absent":412},{"แขวง":"วงศ์สว่าง","หน่วย":26,"ชื่อหน่วย":"เต็นท์ลานกีฬา ซอยวงศ์สว่าง 19","สาย":"D","n1":5,"n2":12,"n3":48,"n4":241,"n5":136,"valid":442,"novote":32,"bad":34,"turnout":508,"eligible":880,"absent":372},{"แขวง":"วงศ์สว่าง","หน่วย":27,"ชื่อหน่วย":"เต็นท์ในศูนย์สาธารณสุข 19 วงศ์สว่าง","สาย":"D","n1":9,"n2":24,"n3":50,"n4":187,"n5":116,"valid":386,"novote":29,"bad":26,"turnout":441,"eligible":840,"absent":399},{"แขวง":"วงศ์สว่าง","หน่วย":28,"ชื่อหน่วย":"โรงเรียนวัดเลียบราษฎร์บำรุง","สาย":"C","n1":8,"n2":31,"n3":27,"n4":154,"n5":119,"valid":339,"novote":25,"bad":26,"turnout":390,"eligible":740,"absent":350},{"แขวง":"วงศ์สว่าง","หน่วย":29,"ชื่อหน่วย":"โรงเรียนวัดเลียบราษฎร์บำรุง","สาย":"C","n1":0,"n2":13,"n3":12,"n4":125,"n5":138,"valid":288,"novote":32,"bad":28,"turnout":348,"eligible":690,"absent":342},{"แขวง":"วงศ์สว่าง","หน่วย":30,"ชื่อหน่วย":"โรงเรียนวัดเลียบราษฎร์บำรุง","สาย":"C","n1":3,"n2":11,"n3":11,"n4":138,"n5":126,"valid":289,"novote":16,"bad":28,"turnout":333,"eligible":700,"absent":367},{"แขวง":"วงศ์สว่าง","หน่วย":31,"ชื่อหน่วย":"โรงเรียนวัดทองสุทธาราม","สาย":"D","n1":7,"n2":25,"n3":43,"n4":162,"n5":122,"valid":359,"novote":24,"bad":26,"turnout":409,"eligible":750,"absent":341},{"แขวง":"วงศ์สว่าง","หน่วย":32,"ชื่อหน่วย":"โรงเรียนวัดทองสุทธาราม","สาย":"D","n1":7,"n2":36,"n3":24,"n4":177,"n5":128,"valid":372,"novote":38,"bad":43,"turnout":453,"eligible":820,"absent":367},{"แขวง":"วงศ์สว่าง","หน่วย":33,"ชื่อหน่วย":"โรงเรียนวัดทองสุทธาราม","สาย":"D","n1":5,"n2":12,"n3":27,"n4":111,"n5":93,"valid":248,"novote":25,"bad":16,"turnout":289,"eligible":540,"absent":251},{"แขวง":"วงศ์สว่าง","หน่วย":34,"ชื่อหน่วย":"โรงเรียนวัดทองสุทธาราม","สาย":"D","n1":8,"n2":26,"n3":20,"n4":134,"n5":115,"valid":303,"novote":25,"bad":26,"turnout":354,"eligible":620,"absent":266},{"แขวง":"วงศ์สว่าง","หน่วย":35,"ชื่อหน่วย":"เต็นท์ปากซอยกรุงเทพ-นนทบุรี 54 (หน้าหมูบ้านวงศ์สว่าง)","สาย":"D","n1":2,"n2":24,"n3":51,"n4":129,"n5":66,"valid":272,"novote":14,"bad":32,"turnout":318,"eligible":590,"absent":272},{"แขวง":"วงศ์สว่าง","หน่วย":36,"ชื่อหน่วย":"เต็นท์วัดทองสุทธาราม","สาย":"D","n1":6,"n2":7,"n3":68,"n4":193,"n5":100,"valid":374,"novote":50,"bad":15,"turnout":439,"eligible":820,"absent":381},{"แขวง":"วงศ์สว่าง","หน่วย":37,"ชื่อหน่วย":"เต็นท์วัดทองสุทธาราม","สาย":"D","n1":1,"n2":42,"n3":40,"n4":182,"n5":153,"valid":418,"novote":33,"bad":30,"turnout":481,"eligible":820,"absent":339},{"แขวง":"วงศ์สว่าง","หน่วย":38,"ชื่อหน่วย":"เต็นท์วัดทองสุทธาราม","สาย":"D","n1":5,"n2":26,"n3":38,"n4":199,"n5":110,"valid":378,"novote":47,"bad":28,"turnout":453,"eligible":820,"absent":367},{"แขวง":"วงศ์สว่าง","หน่วย":39,"ชื่อหน่วย":"เต็นท์วัดทองสุทธาราม","สาย":"D","n1":12,"n2":30,"n3":33,"n4":161,"n5":115,"valid":351,"novote":32,"bad":49,"turnout":432,"eligible":830,"absent":398},{"แขวง":"วงศ์สว่าง","หน่วย":40,"ชื่อหน่วย":"เต็นท์ลานจอดรถสถานีรถไฟบางซ่อน","สาย":"C","n1":3,"n2":27,"n3":19,"n4":223,"n5":28,"valid":300,"novote":51,"bad":21,"turnout":372,"eligible":630,"absent":258},{"แขวง":"วงศ์สว่าง","หน่วย":41,"ชื่อหน่วย":"เต็นท์ลานจอดรถสถานีรถไฟบางซ่อน","สาย":"C","n1":1,"n2":32,"n3":37,"n4":142,"n5":76,"valid":288,"novote":31,"bad":28,"turnout":347,"eligible":570,"absent":223},{"แขวง":"วงศ์สว่าง","หน่วย":42,"ชื่อหน่วย":"เต็นท์ลานกีฬาประชานุกูล","สาย":"C","n1":5,"n2":21,"n3":34,"n4":107,"n5":45,"valid":212,"novote":36,"bad":18,"turnout":266,"eligible":470,"absent":204},{"แขวง":"วงศ์สว่าง","หน่วย":43,"ชื่อหน่วย":"เต็นท์ลานกีฬาประชานุกูล","สาย":"C","n1":2,"n2":18,"n3":40,"n4":116,"n5":49,"valid":225,"novote":25,"bad":10,"turnout":260,"eligible":480,"absent":220},{"แขวง":"วงศ์สว่าง","หน่วย":44,"ชื่อหน่วย":"เต็นท์ใต้ทางด่วน ซอยประชาชื่น 30","สาย":"C","n1":5,"n2":18,"n3":40,"n4":87,"n5":61,"valid":211,"novote":44,"bad":20,"turnout":275,"eligible":600,"absent":325},{"แขวง":"วงศ์สว่าง","หน่วย":45,"ชื่อหน่วย":"เต็นท์ใต้ทางด่วน ซอยประชาชื่น 30","สาย":"C","n1":7,"n2":25,"n3":52,"n4":76,"n5":77,"valid":237,"novote":21,"bad":11,"turnout":269,"eligible":450,"absent":181},{"แขวง":"วงศ์สว่าง","หน่วย":46,"ชื่อหน่วย":"เต็นท์ใต้ทางด่วน ซอยประชาชื่น 30","สาย":"C","n1":7,"n2":14,"n3":42,"n4":125,"n5":79,"valid":267,"novote":32,"bad":18,"turnout":317,"eligible":540,"absent":223},{"แขวง":"วงศ์สว่าง","หน่วย":47,"ชื่อหน่วย":"เต็นท์ปั๊มน้ำมัน ปตท. สาขาประชาชื่น","สาย":"C","n1":7,"n2":21,"n3":44,"n4":112,"n5":90,"valid":274,"novote":35,"bad":20,"turnout":329,"eligible":500,"absent":171},{"แขวง":"วงศ์สว่าง","หน่วย":48,"ชื่อหน่วย":"เต็นท์ปั๊มน้ำมัน ปตท. สาขาประชาชื่น","สาย":"C","n1":2,"n2":8,"n3":33,"n4":92,"n5":78,"valid":213,"novote":24,"bad":24,"turnout":261,"eligible":410,"absent":149},{"แขวง":"วงศ์สว่าง","หน่วย":49,"ชื่อหน่วย":"เต็นท์บริษัทเจษฎ์พัฒนา ซอยประชาชื่น 36","สาย":"C","n1":3,"n2":44,"n3":52,"n4":174,"n5":111,"valid":384,"novote":49,"bad":30,"turnout":463,"eligible":820,"absent":357},{"แขวง":"วงศ์สว่าง","หน่วย":50,"ชื่อหน่วย":"เต็นท์บริษัทเจษฎ์พัฒนา ซอยประชาชื่น 36","สาย":"C","n1":7,"n2":27,"n3":59,"n4":171,"n5":124,"valid":388,"novote":34,"bad":20,"turnout":442,"eligible":830,"absent":388},{"แขวง":"วงศ์สว่าง","หน่วย":51,"ชื่อหน่วย":"เต็นท์บริษัทเจษฎ์พัฒนา ซอยประชาชื่น 36","สาย":"C","n1":8,"n2":30,"n3":29,"n4":171,"n5":87,"valid":325,"novote":31,"bad":44,"turnout":400,"eligible":830,"absent":430},{"แขวง":"วงศ์สว่าง","หน่วย":52,"ชื่อหน่วย":"เต็นท์หน้าธนาคารกรุงเทพ ถนนประชาชื่น","สาย":"C","n1":5,"n2":28,"n3":34,"n4":111,"n5":33,"valid":211,"novote":29,"bad":42,"turnout":282,"eligible":500,"absent":218},{"แขวง":"วงศ์สว่าง","หน่วย":53,"ชื่อหน่วย":"เต็นท์หน้าธนาคารกรุงเทพ ถนนประชาชื่น","สาย":"C","n1":7,"n2":22,"n3":44,"n4":197,"n5":31,"valid":301,"novote":43,"bad":28,"turnout":372,"eligible":650,"absent":278},{"แขวง":"วงศ์สว่าง","หน่วย":54,"ชื่อหน่วย":"เต็นท์หน้าธนาคารกรุงเทพ ถนนประชาชื่น","สาย":"C","n1":1,"n2":32,"n3":37,"n4":142,"n5":76,"valid":288,"novote":31,"bad":28,"turnout":347,"eligible":590,"absent":243}]};
+const fmt = n => n.toLocaleString('th-TH');
+const pct = (a,b,d=1) => b ? (a/b*100).toFixed(d)+'%' : '–';
+const V = {}; DATA.votes.forEach(v => V[v['แขวง']+'|'+v['หน่วย']] = v);
+const mqCompact = matchMedia('(max-width:900px)'), mqHover = matchMedia('(hover:hover)');
+const isCompact = () => mqCompact.matches;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+function agg(kh, units){
+  const t={n1:0,n2:0,n3:0,n4:0,n5:0,valid:0,novote:0,bad:0,turnout:0,eligible:0,absent:0};
+  const rows = units.map(u => V[kh+'|'+u]);
+  rows.forEach(r => { for (const k in t) t[k]+=r[k]; });
+  const others=[1,2,3,5].map(i=>({i,n:t['n'+i]})).sort((a,b)=>b.n-a.n);
+  t.rival=others[0]; t.win = t.n4>t.rival.n; t.margin=t.n4-t.rival.n;
+  t.places=[...new Set(rows.map(r=>r['ชื่อหน่วย']))]; t.rows=rows; t.kh=kh; t.units=units;
+  return t;
+}
+function unitLabel(u){ // 1,2,3,4 -> 1-4 ; 73,74,75,76 -> 73-76
+  const s=[...u].sort((a,b)=>a-b);
+  return s.length>1 && s[s.length-1]-s[0]===s.length-1 ? s[0]+'–'+s[s.length-1] : s.join(', ');
+}
+
+// group polygons that share the same unit set (e.g. two pieces of unit 7)
+const groups = new Map();
+DATA.polys.forEach(p => {
+  const key = p.kh+'|'+p.units.join(',');
+  if(!groups.has(key)) groups.set(key,{key,kh:p.kh,units:p.units,rings:[],t:agg(p.kh,p.units)});
+  groups.get(key).rings.push(p.ring);
+});
+
+// projection: lat/lng -> local metres-ish plane
+let minLat=90,maxLat=-90,minLng=180,maxLng=-180;
+DATA.polys.forEach(p=>p.ring.forEach(([la,ln])=>{minLat=Math.min(minLat,la);maxLat=Math.max(maxLat,la);minLng=Math.min(minLng,ln);maxLng=Math.max(maxLng,ln);}));
+const K = Math.cos((minLat+maxLat)/2*Math.PI/180), S=100000;
+const px = ([la,ln]) => [ (ln-minLng)*K*S, (maxLat-la)*S ];
+const W=(maxLng-minLng)*K*S, H=(maxLat-minLat)*S, PAD=W*0.03;
+const home={x:-PAD,y:-PAD,w:W+2*PAD,h:H+2*PAD};
+let vb={...home};
+
+const svg=document.getElementById('map'), NS='http://www.w3.org/2000/svg';
+const gA=document.createElementNS(NS,'g'), gL=document.createElementNS(NS,'g');
+svg.append(gA,gL);
+
+function areaOf(pts){let a=0;for(let i=0;i<pts.length-1;i++)a+=pts[i][0]*pts[i+1][1]-pts[i+1][0]*pts[i][1];return a/2;}
+function centroid(pts){let a=0,cx=0,cy=0;for(let i=0;i<pts.length-1;i++){const f=pts[i][0]*pts[i+1][1]-pts[i+1][0]*pts[i][1];a+=f;cx+=(pts[i][0]+pts[i+1][0])*f;cy+=(pts[i][1]+pts[i+1][1])*f;}a/=2;return a?[cx/(6*a),cy/(6*a)]:pts[0];}
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function mix(c1,c2,t){const h=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));const a=h(c1),b=h(c2);return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,'0')).join('');}
+
+const els=[];
+groups.forEach(g=>{
+  let best=null,bestA=0;
+  g.els=g.rings.map(r=>{
+    const pts=r.map(px); const a=Math.abs(areaOf(pts)); if(a>bestA){bestA=a;best=pts;}
+    const p=document.createElementNS(NS,'path');
+    p.setAttribute('d','M'+pts.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join('L')+'Z');
+    p.setAttribute('class','area'); p.dataset.key=g.key; p.setAttribute('tabindex','0');
+    p.setAttribute('aria-label',(g.kh==='บางซื่อ'?'แขวงบางซื่อ':'แขวงวงศ์สว่าง')+' หน่วย '+unitLabel(g.units));
+    gA.append(p); els.push(p); return p;
+  });
+  const c=centroid(best), t=document.createElementNS(NS,'text');
+  g.c=c;
+  t.setAttribute('x',c[0]); t.setAttribute('y',c[1]); t.setAttribute('class','lbl');
+  t.textContent=(g.kh==='วงศ์สว่าง'?'ว':'บ')+unitLabel(g.units);
+  g.lbl=t; gL.append(t);
+});
+
+let mode='result', view='plain', lmap=null, opacity=0.4;
+const turnRange=[...groups.values()].map(g=>g.t.turnout/g.t.eligible);
+const shareRange=[...groups.values()].map(g=>g.t.n4/g.t.turnout);
+const rng=a=>[Math.min(...a),Math.max(...a)];
+function colorFor(t){
+  if(mode==='result'){
+    const m=Math.abs(t.margin)/t.valid; const k=Math.min(1,0.25+m/0.5*0.75);
+    return mix(css(t.win?'--win-soft':'--lose-soft'),css(t.win?'--win':'--lose'),k);
+  }
+  const v = mode==='turnout'? t.turnout/t.eligible : t.n4/t.turnout;
+  const [lo,hi]=rng(mode==='turnout'?turnRange:shareRange);
+  return mode==='share' ? mix(css('--org-lo'),css('--org-hi'),(v-lo)/(hi-lo||1)) : mix(css('--seq-lo'),css('--seq-hi'),(v-lo)/(hi-lo||1));
+}
+function paint(){
+  groups.forEach(g=>g.els.forEach(e=>e.setAttribute('fill',colorFor(g.t))));
+  if(lmap) paintMap();
+  const L=document.getElementById('legend');
+  if(mode==='result') L.innerHTML=`<span><i class="sw" style="background:${css('--win')}"></i>เบอร์ 4 ชนะ</span><span><i class="sw" style="background:${css('--lose')}"></i>เบอร์ 4 แพ้<span class="lg-long"> (เบอร์ 5 ชนะทุกพื้นที่ที่แพ้)</span></span><span>${view==='map'?'สียิ่งทึบ':'สียิ่งเข้ม'} = <span class="lg-long">ชนะ/แพ้</span>ห่างมาก</span>`;
+  else{const [lo,hi]=rng(mode==='turnout'?turnRange:shareRange);
+    L.innerHTML=`<span>${mode==='turnout'?'% มาใช้สิทธิ์':'<span class="lg-long">% ของผู้มาใช้สิทธิ์ที่เลือกเบอร์ 4</span><span class="lg-short">% เลือกเบอร์ 4</span>'}</span><span class="num">${(lo*100).toFixed(1)}%<i class="ramp" style="background:linear-gradient(90deg,${css(mode==='share'?'--org-lo':'--seq-lo')},${css(mode==='share'?'--org-hi':'--seq-hi')})"></i>${(hi*100).toFixed(1)}%</span>`;}
+}
+document.querySelectorAll('#modes button').forEach(b=>b.addEventListener('click',()=>{
+  mode=b.dataset.mode; document.querySelectorAll('#modes button').forEach(x=>x.setAttribute('aria-pressed',x===b)); paint();
+}));
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',paint);
+new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+const khName=g=>g.kh==='บางซื่อ'?'แขวงบางซื่อ':'แขวงวงศ์สว่าง';
+const titleHTML=g=>`<h2>${khName(g)} หน่วย ${unitLabel(g.units)}</h2>
+  <p class="place">${g.t.places.join(' · ')}</p>`;
+function barsHTML(t){ const maxN=Math.max(t.n1,t.n2,t.n3,t.n4,t.n5);
+  return `<div class="bars">${[4,5,3,2,1].map(i=>`<div class="bar c${i}"><span>เบอร์ ${i}</span><span class="track"><span class="fill" style="display:block;width:${(t['n'+i]/maxN*100).toFixed(1)}%"></span></span><span class="n">${fmt(t['n'+i])}</span></div>`).join('')}</div>`; }
+function rowsHTML(t){ return t.rows.length>1 ? `<div class="units"><table><thead><tr><th>หน่วย</th><th>เบอร์ 4</th><th>เบอร์ 5</th><th>ห่าง</th><th>มาใช้สิทธิ์</th></tr></thead><tbody>${t.rows.map(r=>{
+      const riv=Math.max(r.n1,r.n2,r.n3,r.n5), d=r.n4-riv;
+      return `<tr><td>${r['หน่วย']}</td><td class="${d>0?'w':''}">${fmt(r.n4)}</td><td class="${d<0?'l':''}">${fmt(r.n5)}</td><td>${d>0?'+':''}${fmt(d)}</td><td>${pct(r.turnout,r.eligible)}</td></tr>`}).join('')}</tbody></table></div>` : ''; }
+// phone bottom sheet: the answer first (win/lose, score, gap, turnout figures), everything else one tap away
+function sheetHTML(g){ const t=g.t, cell=(k,v)=>`<div><div class="k">${k}</div><div class="v">${v}</div></div>`;
+  return `<div class="headline"><span class="verdict ${t.win?'win':'lose'}">เบอร์ 4 ${t.win?'ชนะ':'แพ้'}</span><span class="score">${fmt(t.n4)} ต่อ ${fmt(t.rival.n)}</span></div>
+  <p class="gap">${t.win?'ชนะ':'แพ้'}เบอร์ ${t.rival.i} ห่าง <b class="num">${fmt(Math.abs(t.margin))}</b> คะแนน</p>
+  <div class="mini">${cell('ผู้มาใช้สิทธิ์',fmt(t.turnout)+' คน')+cell('% มาใช้สิทธิ์',pct(t.turnout,t.eligible,2))+cell('ไม่มาใช้สิทธิ์',fmt(t.absent)+' คน')
+    +cell('No Vote',fmt(t.novote))+cell('บัตรเสีย',fmt(t.bad))+cell('% เลือกเบอร์ 4',pct(t.n4,t.turnout))}</div>
+  <button type="button" class="more-btn" aria-expanded="false">ดูคะแนนทุกเบอร์และตัวเลขทั้งหมด</button>
+  <div class="more">${barsHTML(t)}${dlHTML(t)}${rowsHTML(t)}</div>`; }
+function detail(g, full){
+  const t=g.t;
+  return `${titleHTML(g)}
+  <span class="verdict ${t.win?'win':'lose'}">เบอร์ 4 ${t.win?'ชนะ':'แพ้'}</span>
+  <div class="score">${fmt(t.n4)} ต่อ ${fmt(t.rival.n)}</div>
+  <p class="gap">เทียบกับเบอร์ ${t.rival.i} · ${t.win?'ชนะ':'แพ้'}ห่าง <b class="num">${fmt(Math.abs(t.margin))}</b> คะแนน</p>
+  ${barsHTML(t)}
+  ${dlHTML(t)}${full?rowsHTML(t):''}`;
+}
+function dlHTML(t){ return `<dl>
+    <dt>ผู้มีสิทธิ์</dt><dd>${fmt(t.eligible)}</dd>
+    <dt>ผู้มาใช้สิทธิ์</dt><dd>${fmt(t.turnout)}</dd>
+    <dt>สัดส่วนมาใช้สิทธิ์</dt><dd>${pct(t.turnout,t.eligible,2)}</dd>
+    <dt>คนไม่มาใช้สิทธิ์</dt><dd>${fmt(t.absent)}</dd>
+    <dt>ไม่ประสงค์ลงคะแนน (No Vote)</dt><dd>${fmt(t.novote)}</dd>
+    <dt>บัตรเสีย</dt><dd>${fmt(t.bad)}</dd>
+    <div class="sep"></div>
+    <dt>เลือกเบอร์ 4 จากผู้มาใช้สิทธิ์</dt><dd>${pct(t.n4,t.turnout)}</dd>
+    <dt>เลือกเบอร์ 4 จากบัตรที่เลือกผู้สมัคร</dt><dd>${pct(t.n4,t.valid)}</dd>
+    <dt>เบอร์ 4 เทียบผู้มีสิทธิ์ทั้งหมด</dt><dd>${pct(t.n4,t.eligible)}</dd>
+  </dl>`; }
+
+const tip=document.getElementById('tip'), panel=document.getElementById('panel');
+const sheet=document.getElementById('sheet'), sheetBody=document.getElementById('sheetBody'), sheetTitle=document.getElementById('sheetTitle'), taphint=document.getElementById('taphint');
+let pinned=null, hovered=null;
+function highlight(key,on){ const g=groups.get(key); g.els.forEach(e=>{e.classList.toggle('hl',on); if(on && !e.nextSibling?.classList?.contains('hl')) gA.append(e);});
+  if(g.layer){ g.layer.setStyle(on?{weight:4,color:'#ffeb3b'}:{weight:2,color:'#ffffff'}); if(on) g.layer.bringToFront(); } }
+function hideTip(){ tip.hidden=true; if(hovered&&hovered!==pinned) highlight(hovered,false); hovered=null; }
+// hide the small window whenever the pointer is not over an area (also covers missed pointerout events)
+const overArea=t=>!!(t && ((t.dataset&&t.dataset.key) || (t.classList&&t.classList.contains('leaflet-interactive'))));
+document.addEventListener('pointermove',e=>{ if(!tip.hidden && !overArea(e.target)) hideTip(); },{passive:true});
+function placeTip(e){ const w=tip.offsetWidth,h=tip.offsetHeight; let x=e.clientX+16,y=e.clientY+16;
+  if(x+w>innerWidth-8)x=e.clientX-w-16; if(y+h>innerHeight-8)y=Math.max(8,innerHeight-h-8); tip.style.left=Math.max(8,x)+'px'; tip.style.top=y+'px'; }
+svg.addEventListener('pointerleave',hideTip); document.addEventListener('mouseleave',hideTip); addEventListener('blur',hideTip); addEventListener('scroll',hideTip,{passive:true});
+svg.addEventListener('wheel',hideTip,{passive:true});
+function show(g){ if(hovered) highlight(hovered,false); hovered=g.key; highlight(g.key,true); if(pinned) highlight(pinned,true); }
+gA.addEventListener('pointerover',e=>{ if(e.pointerType!=='mouse'||!mqHover.matches)return; const k=e.target.dataset?.key; if(!k)return;
+  const g=groups.get(k); show(g); tip.innerHTML=detail(g,false); tip.hidden=false; if(!pinned) panel.innerHTML=detail(g,true); });
+gA.addEventListener('pointermove',e=>{ if(!tip.hidden) placeTip(e); });
+gA.addEventListener('pointerout',e=>{ if(e.target.dataset?.key){ tip.hidden=true; if(hovered&&hovered!==pinned) highlight(hovered,false); hovered=null; }});
+
+// ---------- details: side panel on desktop, bottom sheet on phones ----------
+function hideHint(){ taphint.hidden=true; }
+function openSheet(title,body,label,full){ sheetTitle.innerHTML=title; sheetBody.innerHTML=body; sheet.classList.toggle('full',!!full);
+  sheet.setAttribute('aria-label',label); sheet.hidden=false; sheetBody.scrollTop=0; hideHint(); }
+function closeSheet(){ if(sheet.hidden) return; sheet.hidden=true; if(pinned){ highlight(pinned,false); pinned=null; } }
+function sheetFor(g){ openSheet(titleHTML(g),sheetHTML(g),'รายละเอียด '+khName(g)+' หน่วย '+unitLabel(g.units)); }
+sheetBody.addEventListener('click',e=>{ const b=e.target.closest('.more-btn'); if(!b) return;
+  const full=sheet.classList.toggle('full'); b.setAttribute('aria-expanded',full); b.textContent=full?'ย่อรายละเอียด':'ดูคะแนนทุกเบอร์และตัวเลขทั้งหมด'; });
+function pin(k){ if(pinned&&pinned!==k) highlight(pinned,false); pinned=k; highlight(k,true); const g=groups.get(k);
+  if(isCompact()){ sheetFor(g); requestAnimationFrame(()=>reveal(g)); }
+  else panel.innerHTML=detail(g,true); }
+// keep the tapped area visible above the bottom sheet
+function visibleBox(rect){ const sh=sheet.hidden?null:sheet.getBoundingClientRect();
+  return {l:rect.left+12,r:rect.right-12,t:rect.top+12,b:Math.min(rect.bottom,sh?sh.top:Infinity)-12}; }
+function reveal(g){
+  if(view==='map'&&lmap){ const rect=lmap.getContainer().getBoundingClientRect(), box=visibleBox(rect);
+    lmap.panInside(g.layer.getBounds().getCenter(),{paddingTopLeft:[24,24],paddingBottomRight:[24,Math.max(24,rect.bottom-box.b+12)]}); return; }
+  const r=svg.getBoundingClientRect(); if(!r.width) return;
+  const s=Math.max(vb.w/r.width,vb.h/r.height), ox=(r.width*s-vb.w)/2, oy=(r.height*s-vb.h)/2;
+  const cx=(g.c[0]-vb.x+ox)/s+r.left, cy=(g.c[1]-vb.y+oy)/s+r.top, box=visibleBox(r);
+  if(cx>box.l+20&&cx<box.r-20&&cy>box.t+20&&cy<box.b-20) return;
+  const tx=(box.l+box.r)/2, ty=(box.t+box.b)/2;
+  animateTo({...vb,x:vb.x+(cx-tx)*s,y:vb.y+(cy-ty)*s});
+}
+let anim=0;
+function animateTo(to){ cancelAnimationFrame(anim); const from={...vb};
+  if(reduceMotion.matches){ vb=to; apply(); return; }
+  const t0=performance.now(), D=280;
+  const step=now=>{ const k=Math.min(1,(now-t0)/D), e=1-Math.pow(1-k,3);
+    vb={x:from.x+(to.x-from.x)*e,y:from.y+(to.y-from.y)*e,w:from.w+(to.w-from.w)*e,h:from.h+(to.h-from.h)*e}; apply();
+    if(k<1) anim=requestAnimationFrame(step); };
+  anim=requestAnimationFrame(step); }
+const noteEl=document.getElementById('note');
+document.getElementById('infoBtn').addEventListener('click',()=>{ if(pinned){highlight(pinned,false);pinned=null;}
+  openSheet('<h2>วิธีคิด</h2>','<ul class="howto">'+[...noteEl.querySelectorAll('span')].map(s=>'<li>'+s.innerHTML+'</li>').join('')+'</ul>','วิธีคิด',true); });
+document.getElementById('sheetClose').addEventListener('click',closeSheet);
+addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
+function onLayoutChange(){ hideTip();
+  if(pinned){ const g=groups.get(pinned); if(isCompact()) sheetFor(g); else { sheet.hidden=true; panel.innerHTML=detail(g,true); } }
+  else if(!isCompact()) sheet.hidden=true;
+  apply(); if(lmap) lmap.invalidateSize(); }
+if(mqCompact.addEventListener) mqCompact.addEventListener('change',onLayoutChange); else if(mqCompact.addListener) mqCompact.addListener(onLayoutChange);
+
+gA.addEventListener('click',e=>{ const k=e.target.dataset?.key; if(!k||moved)return; pin(k); });
+svg.addEventListener('click',e=>{ if(!moved && !e.target.dataset?.key && isCompact()) closeSheet(); });
+gA.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.dataset?.key){e.preventDefault();pin(e.target.dataset.key);} });
+gA.addEventListener('focusin',e=>{ const k=e.target.dataset?.key; if(k&&k!==pinned) pin(k); });
+
+// pan & zoom via viewBox
+const LABEL_MIN_PX=0.12; // on phones, unit labels appear once zoomed in far enough to read them
+function apply(){ svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+  const r=svg.getBoundingClientRect(), upp=Math.max(vb.w/(r.width||1),vb.h/(r.height||1));
+  const compact=isCompact(), fs=(compact?10.5:11)*upp; gL.querySelectorAll('text').forEach(t=>t.setAttribute('font-size',fs));
+  gL.style.display = document.getElementById('lb').checked && (!compact || 1/upp>=LABEL_MIN_PX) ? '' : 'none'; }
+function zoom(f,cx,cy){ if(cx===undefined){cx=vb.x+vb.w/2;cy=vb.y+vb.h/2;}
+  const nw=Math.min(home.w*1.5,Math.max(home.w/14,vb.w*f)); const k=nw/vb.w;
+  vb={x:cx-(cx-vb.x)*k,y:cy-(cy-vb.y)*k,w:vb.w*k,h:vb.h*k}; apply(); }
+function toSvg(e){ const r=svg.getBoundingClientRect(), s=Math.max(vb.w/r.width,vb.h/r.height);
+  const ox=(r.width*s-vb.w)/2, oy=(r.height*s-vb.h)/2; return [vb.x-ox+(e.clientX-r.left)*s, vb.y-oy+(e.clientY-r.top)*s, s]; }
+svg.addEventListener('wheel',e=>{ e.preventDefault(); const [x,y]=toSvg(e); zoom(e.deltaY>0?1.2:1/1.2,x,y); },{passive:false});
+let drag=null, moved=false;
+const ptrs=new Map(); let pinch=null;
+const mid=(a,b)=>({clientX:(a.clientX+b.clientX)/2,clientY:(a.clientY+b.clientY)/2}), dist=(a,b)=>Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+svg.addEventListener('pointerdown',e=>{ cancelAnimationFrame(anim); ptrs.set(e.pointerId,e); if(ptrs.size===1) moved=false;
+  if(ptrs.size===2){const [a,b]=[...ptrs.values()];pinch={d:dist(a,b),m:mid(a,b)};drag=null;moved=true;return;}
+  drag={x:e.clientX,y:e.clientY,vb:{...vb}}; });
+svg.addEventListener('pointermove',e=>{ if(!ptrs.has(e.pointerId))return; ptrs.set(e.pointerId,e);
+  if(pinch&&ptrs.size===2){ const [a,b]=[...ptrs.values()], d=dist(a,b), m=mid(a,b);
+    const [x0,y0]=toSvg(pinch.m), [x1,y1]=toSvg(m); vb.x+=x0-x1; vb.y+=y0-y1;   // fingers' midpoint drags the map
+    const [x,y]=toSvg(m); zoom(pinch.d/d,x,y); pinch.d=d; pinch.m=m; return; }
+  if(!drag)return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; if(Math.hypot(dx,dy)>6){moved=true;svg.classList.add('drag');}
+  if(moved){ const r=svg.getBoundingClientRect(), s=Math.max(drag.vb.w/r.width,drag.vb.h/r.height); vb={...drag.vb,x:drag.vb.x-dx*s,y:drag.vb.y-dy*s}; apply(); } });
+const up=e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2)pinch=null; drag=null; svg.classList.remove('drag');
+  if(ptrs.size===1){ const [r]=[...ptrs.values()]; drag={x:r.clientX,y:r.clientY,vb:{...vb}}; } };
+svg.addEventListener('pointerup',up); svg.addEventListener('pointercancel',up);
+function zoomIn(){ if(view==='map') return lmap.zoomIn(); zoom(1/1.4); }
+function zoomOut(){ if(view==='map') return lmap.zoomOut(); zoom(1.4); }
+function resetView(){ if(view==='map') return lmap.fitBounds(mapBounds,{padding:[10,10]}); animateTo({...home}); }
+document.getElementById('lb').addEventListener('change',()=>{ apply(); syncMapLabels(); });
+for(const [a,b,f] of [['z-in','fz-in',zoomIn],['z-out','fz-out',zoomOut],['z-reset','fz-reset',resetView]]){ document.getElementById(a).onclick=f; document.getElementById(b).onclick=f; }
+
+
+// ---------- satellite map view (Leaflet) ----------
+let mapLabels=null, mapBounds=null;
+function mapColor(t){ return mode==='result' ? css(t.win?'--win':'--lose') : colorFor(t); }
+function mapOpacity(t){ if(mode!=='result') return opacity; const m=Math.min(1,Math.abs(t.margin)/t.valid/0.4); return Math.min(0.95,opacity*(0.6+0.8*m)); }
+function paintMap(){ groups.forEach(g=>g.layer.setStyle({fillColor:mapColor(g.t),fillOpacity:mapOpacity(g.t)})); }
+function syncMapLabels(){ if(!lmap)return; const on=document.getElementById('lb').checked && lmap.getZoom()>=15; on?mapLabels.addTo(lmap):mapLabels.remove(); }
+function initMap(){
+  lmap=L.map('lmap',{zoomSnap:0.5,maxZoom:20,zoomControl:false});
+  const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,maxNativeZoom:19,attribution:'ภาพ &copy; Esri, Maxar, Earthstar Geographics'});
+  const places=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,maxNativeZoom:19});
+  const roads=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,maxNativeZoom:19,opacity:.8});
+  const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:20,maxNativeZoom:19,attribution:'&copy; OpenStreetMap contributors'});
+  let tilesOk=0; const tn=document.getElementById('tilenote');
+  sat.on('tileload',()=>{ tilesOk++; tn.hidden=true; });
+  sat.on('tileerror',()=>{ if(!tilesOk) tn.hidden=false; });
+  const satGroup=L.layerGroup([sat,places]).addTo(lmap);
+  L.control.layers({'ดาวเทียม':satGroup,'แผนที่ถนน':osm},{'เส้นถนน':roads},{position:'topleft'}).addTo(lmap);
+  lmap.on('baselayerchange',e=>{ if(e.layer!==satGroup) tn.hidden=true; });
+  const all=L.featureGroup().addTo(lmap); mapLabels=L.layerGroup();
+  groups.forEach(g=>{
+    g.layer=L.polygon(g.rings,{weight:2,color:'#ffffff',bubblingMouseEvents:false}).addTo(all);
+    g.layer.on('mouseover',e=>{ if(!mqHover.matches||e.originalEvent.pointerType==='touch')return; show(g); tip.innerHTML=detail(g,false); tip.hidden=false; if(!pinned) panel.innerHTML=detail(g,true); placeTip(e.originalEvent); });
+    g.layer.on('mousemove',e=>{ if(!tip.hidden) placeTip(e.originalEvent); });
+    g.layer.on('mouseout',hideTip);
+    g.layer.on('click',()=>pin(g.key));
+    let best=g.rings[0], bestD=0; g.rings.forEach(r=>{ const b=L.latLngBounds(r), d=b.getNorthEast().distanceTo(b.getSouthWest()); if(d>bestD){bestD=d;best=r;} });
+    L.marker(L.latLngBounds(best).getCenter(),{interactive:false,keyboard:false,
+      icon:L.divIcon({className:'mlbl',html:(g.kh==='วงศ์สว่าง'?'ว':'บ')+unitLabel(g.units),iconSize:[60,16],iconAnchor:[30,8]})}).addTo(mapLabels);
+  });
+  lmap.on('click',()=>{ if(isCompact()) closeSheet(); });
+  mapBounds=all.getBounds(); lmap.fitBounds(mapBounds,{padding:[10,10]});
+  lmap.on('zoomend',syncMapLabels); lmap.on('zoomstart movestart',hideTip);
+  document.getElementById('lmap').addEventListener('mouseleave',hideTip);
+  if(pinned) highlight(pinned,true);
+  paintMap(); syncMapLabels();
+}
+document.getElementById('op').addEventListener('input',e=>{ opacity=e.target.value/100; paintMap(); });
+function setView(v){
+  view=v; hideTip();
+  document.querySelectorAll('.views button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===v));
+  svg.toggleAttribute('hidden', v==='map'); document.getElementById('lmap').hidden = v!=='map'; document.getElementById('opWrap').hidden = v!=='map';
+  if(v==='map'){ if(!lmap) initMap(); else lmap.invalidateSize(); } else apply();
+  if(v!=='map') document.getElementById('tilenote').hidden=true;
+  paint();
+}
+document.querySelectorAll('.views button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+
+addEventListener('resize',apply);
+// swipeable rows on phones: fade the right edge until the row is scrolled to its end
+document.querySelectorAll('.toolbar,.stats').forEach(row=>{ const f=()=>row.classList.toggle('at-end',row.scrollLeft+row.clientWidth>=row.scrollWidth-2);
+  row.addEventListener('scroll',f,{passive:true}); addEventListener('resize',f); requestAnimationFrame(f); });
+
+// district summary
+(function(){
+  const T={n1:0,n2:0,n3:0,n4:0,n5:0,valid:0,novote:0,bad:0,turnout:0,eligible:0,absent:0};
+  DATA.votes.forEach(v=>{for(const k in T)T[k]+=v[k];});
+  const unitsWon=DATA.votes.filter(v=>v.n4>Math.max(v.n1,v.n2,v.n3,v.n5)).length;
+  const areas=[...groups.values()], areasWon=areas.filter(g=>g.t.win).length;
+  document.getElementById('stats').innerHTML=`
+   <div class="stat"><div class="k">เบอร์ 4 รวมทั้งเขต</div><div class="v win">${fmt(T.n4)}</div><div class="s">${pct(T.n4,T.turnout,2)} ของผู้มาใช้สิทธิ์</div></div>
+   <div class="stat"><div class="k">เบอร์ 5 (อันดับ 2)</div><div class="v lose">${fmt(T.n5)}</div><div class="s">${pct(T.n5,T.turnout,2)} ของผู้มาใช้สิทธิ์</div></div>
+   <div class="stat"><div class="k">เบอร์ 4 นำห่าง</div><div class="v">${fmt(T.n4-T.n5)}</div><div class="s">คะแนน</div></div>
+   <div class="stat"><div class="k">หน่วยที่เบอร์ 4 ชนะ</div><div class="v">${unitsWon} / ${DATA.votes.length}</div><div class="s">${areasWon} จาก ${areas.length} พื้นที่บนแผนที่</div></div>
+   <div class="stat"><div class="k">มาใช้สิทธิ์</div><div class="v">${pct(T.turnout,T.eligible,2)}</div><div class="s">${fmt(T.turnout)} จาก ${fmt(T.eligible)} คน</div></div>
+   <div class="stat"><div class="k">No Vote · บัตรเสีย</div><div class="v">${fmt(T.novote)} · ${fmt(T.bad)}</div><div class="s">ไม่มาใช้สิทธิ์ ${fmt(T.absent)} คน</div></div>`;
+})();
+
+paint(); apply();
+</script>
+</body>
+</html>

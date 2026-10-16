@@ -28,6 +28,11 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--fg)}
 [hidden]{display:none!important}
+.views{display:flex;gap:4px;padding:10px 12px 0;flex-wrap:wrap}
+.views button,.views a,.views .vcur{display:inline-flex;align-items:center;gap:5px;font:inherit;font-size:.88rem;font-weight:600;line-height:1.55;border:1px solid var(--line);background:var(--bg);color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer;text-decoration:none}
+.views button[aria-pressed="true"],.views .vcur{background:var(--win);border-color:var(--win);color:var(--on-accent);cursor:default}
+.views a:hover{color:var(--fg);border-color:var(--muted)}
+.views a:focus-visible{outline:2px solid var(--seq-hi);outline-offset:2px}
 
 /* required styles */
 
@@ -694,9 +699,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #lmap{height:min(72vh,720px);background:#2a2f2c;z-index:0}
 .leaflet-container{font-family:var(--body)}
 .mlbl{font-family:var(--body);font-weight:700;font-size:12px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;white-space:nowrap;text-align:center;pointer-events:none}
-.views{display:flex;gap:4px;padding:10px 12px 0;flex-wrap:wrap}
-.views button{font:inherit;font-size:.88rem;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer}
-.views button[aria-pressed="true"]{background:var(--win);border-color:var(--win);color:var(--on-accent)}
 .op{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted);margin-right:6px}
 .op input{width:90px}
 .tilenote{position:absolute;top:10px;left:58px;right:10px;z-index:1001;pointer-events:none;background:rgba(0,0,0,.72);color:#fff;font-size:.78rem;line-height:1.45;padding:6px 10px;border-radius:8px}
@@ -819,9 +821,9 @@ td.w{color:var(--win);font-weight:600} td.l{color:var(--lose);font-weight:600}
   .more-btn{display:block;width:100%;margin-top:10px;font:inherit;font-size:.84rem;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:8px;padding:7px 10px;cursor:pointer}
   .sheet .more{display:none}
   .sheet.full .more{display:block;margin-top:14px}
-  
   .views{padding:8px 10px 0}
-  .views button{font-size:.82rem;padding:5px 12px}
+  .views button,.views a,.views .vcur{font-size:.82rem;padding:5px 12px}
+  
   .op{font-size:.8rem;margin-right:2px}
   .op input{width:76px}
   #lmap{position:absolute;inset:0;width:100%;height:100%}
@@ -851,6 +853,7 @@ td.w{color:var(--win);font-weight:600} td.l{color:var(--lose);font-weight:600}
         <button id="v-plain" type="button" aria-pressed="true" data-view="plain">พื้นหลังขาว</button>
         <button id="v-map" type="button" aria-pressed="false" data-view="map">แผนที่ดาวเทียม</button>
       </div>
+      
       
       <div class="toolbar">
         <div class="seg" id="modes" role="group" aria-label="แสดงสีตาม">
@@ -1219,6 +1222,7 @@ document.querySelectorAll('.toolbar,.stats').forEach(row=>{ const f=()=>row.clas
 })();
 
 paint(); apply();
+if(location.hash==='#map') setView('map');   // link from the Claude page opens straight into the satellite view
 </script>
 </body>
 </html>
